@@ -1,5 +1,8 @@
 import React from 'react';
+import { useState } from 'react';
 import './main.css';
+const P = require("./pokemon.js");
+const POKEMON = P.POKEMON;
 
 function Pokemon(props) {
     return (
@@ -11,12 +14,12 @@ class Guesser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            guess: ""
+            guess: "",
         }
     }
 
     handleChange(event) {
-        this.setState({ guess: event.target.value });
+        this.setState( {guess: event.target.value } );
     };
 
 
@@ -26,7 +29,8 @@ class Guesser extends React.Component {
                 <form>
                     <input type="text" value={this.state.guess} onChange={(event) => this.handleChange(event)}/>
                 </form>
-            <p>{this.state.guess}</p>
+            <p>{this.state.guess ? this.state.guess : "Type to start"}</p>
+            <p>{this.props.correct !== this.state.guess ? this.props.correct : "Correct!!!!!!!!!!!!!"}</p>
             </div>
         )
 
@@ -72,7 +76,7 @@ class Game extends React.Component {
     }
 
     getRandomDexNumber() {
-        return Math.floor(Math.random() * 898) + 1
+        return Math.floor(Math.random() * 898);
     }
 
     handleClick() {
@@ -83,9 +87,9 @@ class Game extends React.Component {
     render() {
         return(
             <div>
-                <Pokemon url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + this.state.dexNumber + ".png"}
+                <Pokemon url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + (this.state.dexNumber + 1) + ".png"}
                         onClick={() => this.handleClick()}/>
-                <Guesser/>
+                <Guesser correct={POKEMON[this.state.dexNumber].toLowerCase()}/>
                 <HintButton theHint={"This Pokemon's dex number is " + this.state.dexNumber}/>
             </div>
         );
