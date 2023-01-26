@@ -9,57 +9,6 @@ function Pokemon(props) {
     )
 }
 
-// class Guesser extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             guess: "",
-//         }
-//     }
-
-
-
-
-//     render() {
-//         return (
-//             <div>
-//                 <form>
-//                     <input type="text" value={this.state.guess} onChange={(event) => this.handleChange(event)}/>
-//                 </form>
-//             <p>{this.state.guess ? this.state.guess : "Type to start"}</p>
-//             <p>{this.props.correct !== this.state.guess ? this.props.correct : "Correct!!!!!!!!!!!!!"}</p>
-//             </div>
-//         )
-
-//     }
-// }
-
-// class HintButton extends React.Component {
-//     constructor(props) {
-//         super(props);
-
-//         this.state = {
-//             text: "Hint!",
-//             disabled: this.props.disabled
-//         }
-        
-//     }
-
-//     handleClick(event) {
-//         console.log(this.state);
-//         this.setState( {text: this.props.theHint, disabled: true} )
-//     }
-
-//     render() {
-//         return (
-//             <button onClick={(e) => this.handleClick(e)}>
-//                 {this.state.text}
-//             </button>
-//         )
-//     }
-// }
-
-
 class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -71,13 +20,17 @@ class Game extends React.Component {
             hintMessage: "",
             hintDisabled: false,
             lineText: this.getInitialLineText(dex),
-            score: 0
+            score: 0,
+            timeLeft: 100
             
         }
         this.handleImageClick = this.handleNewPokemon.bind(this);
         this.handleHintClick = this.handleHintClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.startTimer = this.startTimer.bind(this);
+        this.countDown = this.countDown.bind(this);
+        this.timer = 0;
         
     }
 
@@ -114,18 +67,21 @@ class Game extends React.Component {
         event.preventDefault();
         console.log(event.target[0].value);
 
+        let guess = event.target[0].value.toLowerCase();
+        let correct = POKEMON[this.state.dexNumber]
 
-        if (event.target[0].value === "") {
+
+        if (guess === "") {
             this.handleNewPokemon();
 
-        } else if(event.target[0].value === POKEMON[this.state.dexNumber]) {
+        } else if(guess === correct) {
             this.setState( {score: this.state.score + 1} )
             this.handleNewPokemon();
 
         } else {
             let s = ""
-            for(let i = 0; i < POKEMON[this.state.dexNumber].length; i++) {
-                s += (event.target[0].value[i] === POKEMON[this.state.dexNumber][i] ? POKEMON[this.state.dexNumber][i] + " " : "_ ")
+            for(let i = 0; i < correct.length; i++) {
+                s += (guess[i] === correct[i] ? correct[i] + " " : "_ ")
             }
             this.setState( {lineText: s} ) 
         }
@@ -133,11 +89,30 @@ class Game extends React.Component {
     
     }
 
+    countDown() {
+        this.setState( {timeLeft: this.state.timeLeft - 1} );
+        
+        if (this.state.timeLeft === 1) {
+            clearInterval(this.timer);
+        }
+
+    }
+
+    startTimer() {
+        if (this.timer === 0 && this.state.timeLeft > 0) {
+            this.timer = setInterval(this.countDown, 1000);
+          }
+    }
+
 
     render() {
+        this.startTimer();
+
         return (
+            
             <div>
                 <h2>{"Score: " + this.state.score}</h2>
+                <h2>{this.state.timeLeft}</h2>
                 <Pokemon url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + (this.state.dexNumber + 1) + ".png"}
                         onClick={() => this.handleNewPokemon()}/>
                         
