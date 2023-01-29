@@ -9,10 +9,36 @@ function Pokemon(props) {
     )
 }
 
+const getGeneration = (dexNumber) => {
+        if(dexNumber <= 151 && dexNumber > 0) {
+            return 1
+        } else if(dexNumber <= 251) {
+            return 2
+        } else if(dexNumber <= 386) {
+            return 3
+        } else if(dexNumber <= 493) {
+            return 4
+        } else if(dexNumber <= 649) {
+            return 5
+        } else if(dexNumber <= 721) {
+            return 6
+        } else if(dexNumber <= 809) {
+            return 7
+        } else if(dexNumber <= 906) {
+            return 8
+        } else if(dexNumber <= 1008) {
+            return 9
+        } else {
+            return -1
+        }
+}
+
 class Game extends React.Component {
     constructor(props) {
         super(props);
         let dex = this.getRandomDexNumber()
+
+        console.log(dex)
 
         this.state = {
             dexNumber: dex,
@@ -21,7 +47,8 @@ class Game extends React.Component {
             hintDisabled: false,
             lineText: this.getInitialLineText(dex),
             score: 0,
-            timeLeft: 100
+            timeLeft: 100,
+            combo: 0
             
         }
         this.handleImageClick = this.handleNewPokemon.bind(this);
@@ -34,8 +61,9 @@ class Game extends React.Component {
         
     }
 
+    // TODO Buffer loading image
     getRandomDexNumber() {
-        return Math.floor(Math.random() * 898);
+        return Math.floor(Math.random() * 1008) + 1;
     }
 
     getInitialLineText(dex) {
@@ -46,23 +74,27 @@ class Game extends React.Component {
         return s.trim();
     }
 
-    handleNewPokemon() {
+    handleNewPokemon(resetCombo) {
         let newDex = this.getRandomDexNumber();
         this.setState( {dexNumber: newDex, 
                         guess:"", 
                         hintMessage: "",
                         lineText: this.getInitialLineText(newDex)} )
+
+        if(resetCombo) this.setState( {combo: 0} ) 
     }
 
     handleHintClick() {
-        this.setState( {hintMessage: "This Pokemon's dex number is " + this.state.dexNumber}  );
+        this.setState( {hintMessage: "This Pokemon's from Generation " + (getGeneration(this.state.dexNumber)),
+                        lineText: POKEMON[this.state.dexNumber][0] + this.state.lineText.slice(1, -1) + POKEMON[this.state.dexNumber][POKEMON[this.state.dexNumber].length - 1]
+                        } );
     }
 
     handleInputChange(event) {
         this.setState( {guess: event.target.value } );
-        
     };
 
+    // TODO Change setinterval to something more optimal
     handleSubmit(event) {
         event.preventDefault();
         console.log(event.target[0].value);
@@ -73,17 +105,18 @@ class Game extends React.Component {
 
         if (guess === "") {
             this.handleNewPokemon();
+            this.setState( {combo: 0} )
 
         } else if(guess === correct) {
-            this.setState( {score: this.state.score + 1} )
-            this.handleNewPokemon();
+            this.setState( {score: this.state.score + 1, combo: this.state.combo + 1} )
+            this.handleNewPokemon(false);
 
         } else {
             let s = ""
             for(let i = 0; i < correct.length; i++) {
-                s += (guess[i] === correct[i] ? correct[i] + " " : "_ ")
+                s += ((guess[i] === correct[i] || this.state.lineText[i*2] !== "_") ? correct[i] + " " : "_ ")
             }
-            this.setState( {lineText: s} ) 
+            this.setState( {lineText: s.trim(), combo: 0} ) 
         }
 
     
@@ -95,7 +128,6 @@ class Game extends React.Component {
         if (this.state.timeLeft === 1) {
             clearInterval(this.timer);
         }
-
     }
 
     startTimer() {
@@ -109,24 +141,29 @@ class Game extends React.Component {
         this.startTimer();
 
         return (
-            
             <div>
                 <h2>{"Score: " + this.state.score}</h2>
                 <h2>{this.state.timeLeft}</h2>
-                <Pokemon url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + (this.state.dexNumber + 1) + ".png"}
-                        onClick={() => this.handleNewPokemon()}/>
+                <Pokemon url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + (this.state.dexNumber) + ".png"}
+                        onClick={() => this.handleNewPokemon(true)}/>
                         
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" value={this.state.guess} onChange={(event) => this.handleInputChange(event)}/>
                 </form>
-                <h2>{this.state.lineText}</h2>
-                {/* <p>{POKEMON[this.state.dexNumber] !== this.state.guess ? POKEMON[this.state.dexNumber] : "Correct!!!!!!!!!!!!!"}</p> */}
+                <p>{this.state.lineText}</p>
             </div>
-                <button onClick={() => this.handleHintClick()}>
-                    {"Click for hint!"}
+            <div className="button-array">
+                <button onClick={() => this.handleNewPokemon(true)}>
+                    {"Pass"}
                 </button>
-                &nbsp; {this.state.hintMessage}
+                <button onClick={() => this.handleHintClick()}>
+                    {"Hint"}
+                </button>
+                
+            </div>
+            <h3>{this.state.hintMessage}</h3>
+            <h3>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</h3>
             </div>
         );
     }
