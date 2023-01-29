@@ -47,7 +47,7 @@ class Game extends React.Component {
             hintDisabled: false,
             lineText: this.getInitialLineText(dex),
             score: 0,
-            timeLeft: 100,
+            timeLeft: 30,
             combo: 0
             
         }
@@ -136,14 +136,22 @@ class Game extends React.Component {
           }
     }
 
+    isRed() {
+        if(this.state.timeLeft > 10 || this.state.timeLeft % 2 === 1) return ""
+        return "red"
+    }
+
 
     render() {
         this.startTimer();
 
         return (
             <div>
-                <h2>{"Score: " + this.state.score}</h2>
-                <h2>{this.state.timeLeft}</h2>
+                <div className="text-array">
+                    <h2>{"Score: " + this.state.score}</h2>
+                    <h2 className={(this.state.timeLeft <= 10 && this.state.timeLeft % 2 === 0) ? "red" : ""}>{this.state.timeLeft}</h2>
+                </div>
+
                 <Pokemon url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + (this.state.dexNumber) + ".png"}
                         onClick={() => this.handleNewPokemon(true)}/>
                         
@@ -151,7 +159,7 @@ class Game extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" value={this.state.guess} onChange={(event) => this.handleInputChange(event)}/>
                 </form>
-                <p>{this.state.lineText}</p>
+                <p className="linetext">{this.state.lineText}</p>
             </div>
             <div className="button-array">
                 <button onClick={() => this.handleNewPokemon(true)}>
@@ -163,7 +171,7 @@ class Game extends React.Component {
                 
             </div>
             <h3>{this.state.hintMessage}</h3>
-            <h3>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</h3>
+            <p className="combo" key={this.state.combo}>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</p>
             </div>
         );
     }
