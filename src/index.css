@@ -42,27 +42,33 @@ header {
 header h1 {
     line-height: 80px;
     font-size: 48px;
+
     background: linear-gradient(to bottom, #DC143C 58%, rgb(255, 188, 188) 58%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: auto;
+    user-select: none;
 }
 
 #dark-toggle {
     position: absolute;
-    width: 80px;
     font-size: 35px;
-    line-height: 80px;
     text-align: center;
     right: 0;
+    height: 60px;
+    line-height: 60px;
+    width: 60px;
+    margin: 10px;
+    cursor: pointer;
 }
 
-#game > div {
+.game, .start, #game{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
+    min-width: 512px;
 }
 
 input {
@@ -70,10 +76,16 @@ input {
     padding: 5px;
     text-align: center;
     width: 300px;
+    accent-color: #DC143C;
+}
+
+input[type=range] {
+    width: 100%;
 }
 
 .mon {
     width: 512px;
+    height: 512px;
     margin: 15px 0 30px;
     padding: 30px;
     pointer-events: none;
@@ -123,6 +135,7 @@ button {
     border-radius: 10px;
     outline: 2px solid black;
     transition: all 0.25s;
+    min-width: 170px;
 }
 
 button:hover {

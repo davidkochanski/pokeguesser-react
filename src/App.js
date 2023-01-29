@@ -5,7 +5,7 @@ const POKEMON = P.POKEMON;
 
 function Pokemon(props) {
     return (
-        <img className="mon" src={"" + props.url} alt="mon" onClick={props.onClick}/>
+        <img className="mon" src={"" + props.url} alt="" onClick={props.onClick}/>
     )
 }
 
@@ -38,8 +38,6 @@ class Game extends React.Component {
         super(props);
         let dex = this.getRandomDexNumber()
 
-        console.log(dex)
-
         this.state = {
             dexNumber: dex,
             guess: "",
@@ -47,11 +45,11 @@ class Game extends React.Component {
             hintDisabled: false,
             lineText: this.getInitialLineText(dex),
             score: 0,
-            timeLeft: 30,
+            timeLeft: this.props.timeLeft,
             combo: 0
             
         }
-        this.handleImageClick = this.handleNewPokemon.bind(this);
+        this.handleImageClick = this.newPokemon.bind(this);
         this.handleHintClick = this.handleHintClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -74,7 +72,7 @@ class Game extends React.Component {
         return s.trim();
     }
 
-    handleNewPokemon(resetCombo) {
+    newPokemon(resetCombo) {
         let newDex = this.getRandomDexNumber();
         this.setState( {dexNumber: newDex, 
                         guess:"", 
@@ -85,9 +83,26 @@ class Game extends React.Component {
     }
 
     handleHintClick() {
-        this.setState( {hintMessage: "This Pokemon's from Generation " + (getGeneration(this.state.dexNumber)),
-                        lineText: POKEMON[this.state.dexNumber][0] + this.state.lineText.slice(1, -1) + POKEMON[this.state.dexNumber][POKEMON[this.state.dexNumber].length - 1]
-                        } );
+        this.setState( {hintMessage: "This Pokemon's from Generation " + (getGeneration(this.state.dexNumber))} );
+
+        let mon = POKEMON[this.state.dexNumber]
+        let end = mon.length - 1
+
+        let txt = this.state.lineText;
+
+
+        if(txt[0] === "_" && txt[txt.length-1] === "_") {
+
+            this.setState( {lineText: mon[0] + txt.slice(1, -1) + mon[end]} )
+
+        } else {
+            let idx = txt.indexOf("_");
+            
+            if(idx !== -1) {
+                this.setState( {lineText: txt.substring(0, idx) + mon[idx/2] + txt.substring(idx + 1, txt.length),
+                                combo: 0})
+            }
+        }
     }
 
     handleInputChange(event) {
@@ -97,19 +112,17 @@ class Game extends React.Component {
     // TODO Change setinterval to something more optimal
     handleSubmit(event) {
         event.preventDefault();
-        console.log(event.target[0].value);
-
         let guess = event.target[0].value.toLowerCase();
         let correct = POKEMON[this.state.dexNumber]
 
 
         if (guess === "") {
-            this.handleNewPokemon();
+            this.newPokemon();
             this.setState( {combo: 0} )
 
         } else if(guess === correct) {
             this.setState( {score: this.state.score + 1, combo: this.state.combo + 1} )
-            this.handleNewPokemon(false);
+            this.newPokemon(false);
 
         } else {
             let s = ""
@@ -136,24 +149,18 @@ class Game extends React.Component {
           }
     }
 
-    isRed() {
-        if(this.state.timeLeft > 10 || this.state.timeLeft % 2 === 1) return ""
-        return "red"
-    }
-
-
     render() {
         this.startTimer();
 
         return (
-            <div>
+            <div className="game">
                 <div className="text-array">
                     <h2>{"Score: " + this.state.score}</h2>
                     <h2 className={(this.state.timeLeft <= 10 && this.state.timeLeft % 2 === 0) ? "red" : ""}>{this.state.timeLeft}</h2>
                 </div>
 
                 <Pokemon url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + (this.state.dexNumber) + ".png"}
-                        onClick={() => this.handleNewPokemon(true)}/>
+                        onClick={() => this.newPokemon(true)}/>
                         
             <div>
                 <form onSubmit={this.handleSubmit}>
@@ -162,7 +169,7 @@ class Game extends React.Component {
                 <p className="linetext">{this.state.lineText}</p>
             </div>
             <div className="button-array">
-                <button onClick={() => this.handleNewPokemon(true)}>
+                <button onClick={() => this.newPokemon(true)}>
                     {"Pass"}
                 </button>
                 <button onClick={() => this.handleHintClick()}>
@@ -180,5 +187,73 @@ class Game extends React.Component {
 
 
 
+class App extends React.Component {
+    constructor(props) {
+        super(props);
 
-export default Game;
+        this.state = {
+            active: false,
+            difficultyText: "Normal"
+        }
+    }
+
+    handleStartClick() {
+        this.setState( {active: true} );
+
+    }
+
+    handleRangeChange(event) {
+        if(event.target.value === "25") {
+            this.setState( {difficultyText: "Easy"} )
+            
+        } else if(event.target.value === "75") {
+            this.setState( {difficultyText: "Normal"} )
+        } else {
+            this.setState( {difficultyText: "Hard"} )
+        }
+    }
+
+
+    renderStartPage() {
+        if(!this.state.active) {
+            return (
+                <div className="start">
+                    <form>
+                        <label htmlFor="difficulty">Difficulty</label>
+                        <input onChange={(event) => this.handleRangeChange(event)} type="range" id="difficulty" name="difficulty"  min="25" max="125" step="50"/>
+                        <h2>{this.state.difficultyText}</h2>
+                    </form>
+                    <button onClick={() => this.handleStartClick()}>
+                        Start
+                    </button>
+
+                </div>
+            )
+        }
+    }
+
+
+    renderGame() {
+        return this.state.active ? <Game timeLeft={48977984712}/> : null
+    }
+
+    
+
+    render() {
+        return (
+            
+
+            <div>
+                
+                {this.renderStartPage()}
+                {this.renderGame()}
+            </div>
+
+        )
+
+    }
+
+
+}
+
+export default App;
