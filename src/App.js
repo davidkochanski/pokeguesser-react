@@ -46,7 +46,11 @@ class Game extends React.Component {
             lineText: this.getInitialLineText(dex),
             score: 0,
             timeLeft: this.props.timeLeft,
-            combo: 0
+            combo: 0,
+            difficulty: this.props.difficulty,
+            monsSkipped: 0,
+            monsGuessed: 0,
+            hintsTaken: 0
             
         }
         this.handleImageClick = this.newPokemon.bind(this);
@@ -79,7 +83,7 @@ class Game extends React.Component {
                         hintMessage: "",
                         lineText: this.getInitialLineText(newDex)} )
 
-        if(resetCombo) this.setState( {combo: 0} ) 
+        if(resetCombo) this.setState( {combo: 0, monsSkipped: this.state.monsSkipped + 1} ) 
     }
 
     handleHintClick() {
@@ -93,14 +97,14 @@ class Game extends React.Component {
 
         if(txt[0] === "_" && txt[txt.length-1] === "_") {
 
-            this.setState( {lineText: mon[0] + txt.slice(1, -1) + mon[end]} )
+            this.setState( {lineText: mon[0] + txt.slice(1, -1) + mon[end], hintsTaken: this.state.hintsTaken + 1} )
 
         } else {
             let idx = txt.indexOf("_");
             
             if(idx !== -1) {
                 this.setState( {lineText: txt.substring(0, idx) + mon[idx/2] + txt.substring(idx + 1, txt.length),
-                                combo: 0})
+                                combo: 0, hintsTaken: this.state.hintsTaken + 1})
             }
         }
     }
@@ -118,10 +122,10 @@ class Game extends React.Component {
 
         if (guess === "") {
             this.newPokemon();
-            this.setState( {combo: 0} )
+            this.setState( {combo: 0, monsSkipped: this.state.monsSkipped + 1} )
 
         } else if(guess === correct) {
-            this.setState( {score: this.state.score + 1, combo: this.state.combo + 1} )
+            this.setState( {score: this.state.score + 1, combo: this.state.combo + 1, monsGuessed: this.state.monsGuessed + 1} )
             this.newPokemon(false);
 
         } else {
@@ -177,6 +181,8 @@ class Game extends React.Component {
                 </button>
                 
             </div>
+            <h3>{this.state.difficulty}</h3>
+            <h3>{this.state.monsGuessed} | {this.state.monsSkipped} | {this.state.hintsTaken}</h3>
             <h3>{this.state.hintMessage}</h3>
             <p className="combo" key={this.state.combo}>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</p>
             </div>
@@ -193,7 +199,10 @@ class App extends React.Component {
 
         this.state = {
             active: false,
-            difficultyText: "Normal"
+            difficultyText: "Normal",
+            time: 60,
+            timeText: "1 min"
+
         }
     }
 
@@ -203,14 +212,35 @@ class App extends React.Component {
     }
 
     handleRangeChange(event) {
-        if(event.target.value === "25") {
+        let e = event.target.value
+        if(e === "25") {
             this.setState( {difficultyText: "Easy"} )
             
-        } else if(event.target.value === "75") {
+        } else if(e === "75") {
             this.setState( {difficultyText: "Normal"} )
         } else {
             this.setState( {difficultyText: "Hard"} )
         }
+    }
+
+    handleTimeChange(event) {
+        let e = event.target.value
+        if(e === "25") {
+            this.setState( {time: 30, timeText: "30 sec."} )
+
+        } else if(e === "50") {
+            this.setState( {time: 60, timeText: "1 min"} )
+
+        } else if(e === "75") {
+            this.setState( {time: 180, timeText: "3 min"} )
+
+        } else if(e === "100") {
+            this.setState( {time: 300, timeText: "5 min"} )
+
+        } else if(e === "125") {
+            this.setState( {time: 0, timeText: "Zen Mode"} )
+        }
+
     }
 
 
@@ -222,6 +252,10 @@ class App extends React.Component {
                         <label htmlFor="difficulty">Difficulty</label>
                         <input onChange={(event) => this.handleRangeChange(event)} type="range" id="difficulty" name="difficulty"  min="25" max="125" step="50"/>
                         <h2>{this.state.difficultyText}</h2>
+
+                        <label htmlFor="time">Time</label>
+                        <input onChange={(event) => this.handleTimeChange(event)} type="range" id="time" name="time"  min="25" max="125" step="25"/>
+                        <h2>{this.state.timeText}</h2>
                     </form>
                     <button onClick={() => this.handleStartClick()}>
                         Start
@@ -234,26 +268,18 @@ class App extends React.Component {
 
 
     renderGame() {
-        return this.state.active ? <Game timeLeft={48977984712}/> : null
+        return this.state.active ? <Game difficulty={this.state.difficultyText} timeLeft={this.state.time}/> : null
     }
-
     
 
     render() {
         return (
-            
-
             <div>
-                
                 {this.renderStartPage()}
                 {this.renderGame()}
             </div>
-
         )
-
     }
-
-
 }
 
 export default App;
