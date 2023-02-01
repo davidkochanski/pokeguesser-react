@@ -63,7 +63,6 @@ class Game extends React.Component {
         
     }
 
-    // TODO Buffer loading image
     getRandomDexNumber() {
         if (this.props.difficulty === "Easy") {
             return Math.floor(Math.random() * 151) + 1;
@@ -115,9 +114,8 @@ class Game extends React.Component {
 
     handleInputChange(event) {
         this.setState( {guess: event.target.value } );
-    };
+    }
 
-    // TODO Change setinterval to something more optimal
     handleSubmit(event) {
         event.preventDefault();
         let guess = event.target[0].value.toLowerCase();
@@ -192,7 +190,6 @@ class Game extends React.Component {
             </div>
         );
     }
-
 }
 
 
@@ -206,7 +203,6 @@ class App extends React.Component {
             difficultyText: "Normal",
             time: 60,
             timeText: "1 min"
-
         }
     }
 
@@ -219,7 +215,6 @@ class App extends React.Component {
         let e = event.target.value
         if(e === "25") {
             this.setState( {difficultyText: "Easy"} )
-            
         } else if(e === "75") {
             this.setState( {difficultyText: "Normal"} )
         } else {
@@ -249,48 +244,46 @@ class App extends React.Component {
 
 
     renderStartPage() {
-        if(!this.state.active) {
-            return (
-                <div className="start">
-                    <form>
-                        <div className="form-section">
-                            <label htmlFor="difficulty">Difficulty</label>
-                            <input onChange={(event) => this.handleRangeChange(event)} type="range" id="difficulty" name="difficulty"  min="25" max="125" step="50"/>
-                            <h2>{this.state.difficultyText}</h2>
-                            <i className="fa-solid fa-circle-info">
-                                <span className="tooltip">AOVNJAOWINBAJBNIAWBAWBNIBIAOW</span>
-                            </i>
+        if(this.state.active) return null
+            
+        return (
+            <div className="start">
+                <form>
+                    <div className="form-section">
+                        <label htmlFor="difficulty">Difficulty</label>
+                        <input onChange={(event) => this.handleRangeChange(event)} type="range" id="difficulty" name="difficulty"  min="25" max="125" step="50"/>
+                        <h2>{this.state.difficultyText}</h2>
+                        <i className="fa-solid fa-circle-info">
+                            <span className="tooltip">
+                                <div className="tooltip-header"><strong>Easy Mode</strong></div>
+                                <div className="tooltip-text">Contains only the first 151 Pokemon from Generation 1. Great place to start.</div>
 
+                                <div className="tooltip-header"><strong>Normal Mode</strong></div>
+                                <div className="tooltip-text">All 1008 Pokemon are fair game.</div>
 
-                        </div>
+                                <div className="tooltip-header"><strong>Hard Mode</strong></div>
+                                <div className="tooltip-text">All 1008 Pokemon, AND no letter hints are granted. Only for true Pokemon Masters.</div>
+                            </span>
+                        </i>
+                    </div>
 
+                    <div className="form-section">
+                        <label htmlFor="time">Time</label>
+                        <input onChange={(event) => this.handleTimeChange(event)} type="range" id="time" name="time"  min="25" max="125" step="25"/>
+                        <h2>{this.state.timeText}</h2>
+                        <i className="fa-solid ">
+                            {/* pass */}
+                        </i>
+                    </div>
+                </form>
 
-                        <div className="form-section">
-                            <label htmlFor="time">Time</label>
-                            <input onChange={(event) => this.handleTimeChange(event)} type="range" id="time" name="time"  min="25" max="125" step="25"/>
-                            <h2>{this.state.timeText}</h2>
-                            <i className="fa-solid fa-circle-info">
-                                <span className="tooltip">AOVNJAOWINBAJBNIAWBAWBNIBIAOW</span>
-                            </i>
-
-                        </div>
-
-                    </form>
-
-                    <button onClick={() => this.handleStartClick()}>
-                        Start
-                    </button>
-
-
-                    
-                    
-
-                </div>
-            )
-        }
+                <button onClick={() => this.handleStartClick()}>
+                    Start
+                </button>
+            </div>
+        )
+        
     }
-
-
     renderGame() {
         return this.state.active ? <Game difficulty={this.state.difficultyText} timeLeft={this.state.time}/> : null
     }

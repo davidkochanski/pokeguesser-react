@@ -14,21 +14,6 @@ body {
     color: white;
 }
 
-.tooltip-text {
-    display: none;
-    position: absolute;
-    z-index: 10;
-    width: 100px;
-    text-align: center;
-    bottom: 100%;
-    left: 50%;
-}
-
-.tooltip:hover > .tooltip-text {
-    display: block;
-}
-
-
 .light {
     background-color: white;
     color: black;
@@ -192,16 +177,54 @@ button:hover {
 }
 
 .form-section > i {
+    position: relative;
     flex-grow: 0.25;
     font-size: 18px;
 }
 
 .tooltip {
+    font-family: Lato, sans-serif;
+    font-weight: normal;
     display: none;
+    padding: 15px 12px;
     position: absolute;
-    width: 100px;
-    z-index: 10;
+    width: 300px;
+    left: 105%; 
+    translate: 0 -50%;
+    margin-left: -300px;
+    height: fit-content;
+
+
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
+
+.light .tooltip {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.tooltip-header {
+    width: 100%;
+}
+
+.tooltip-text {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.tooltip-text:last-of-type {
+    margin-bottom: 0;
+}
+
 
 .form-section > i:hover > .tooltip, .tooltip:hover {
     display: block;
