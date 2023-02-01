@@ -47,7 +47,7 @@ class Game extends React.Component {
             score: 0,
             timeLeft: this.props.timeLeft,
             combo: 0,
-            difficulty: this.props.difficulty,
+            difficulty: this.props.difficultyText,
             monsSkipped: 0,
             monsGuessed: 0,
             hintsTaken: 0
@@ -65,7 +65,11 @@ class Game extends React.Component {
 
     // TODO Buffer loading image
     getRandomDexNumber() {
-        return Math.floor(Math.random() * 1008) + 1;
+        if (this.props.difficulty === "Easy") {
+            return Math.floor(Math.random() * 151) + 1;
+        } else {
+            return Math.floor(Math.random() * 1008) + 1;
+        }
     }
 
     getInitialLineText(dex) {
@@ -94,7 +98,6 @@ class Game extends React.Component {
 
         let txt = this.state.lineText;
 
-
         if(txt[0] === "_" && txt[txt.length-1] === "_") {
 
             this.setState( {lineText: mon[0] + txt.slice(1, -1) + mon[end], hintsTaken: this.state.hintsTaken + 1} )
@@ -104,7 +107,8 @@ class Game extends React.Component {
             
             if(idx !== -1) {
                 this.setState( {lineText: txt.substring(0, idx) + mon[idx/2] + txt.substring(idx + 1, txt.length),
-                                combo: 0, hintsTaken: this.state.hintsTaken + 1})
+                                combo: 0, 
+                                hintsTaken: this.state.hintsTaken + 1})
             }
         }
     }
@@ -249,17 +253,37 @@ class App extends React.Component {
             return (
                 <div className="start">
                     <form>
-                        <label htmlFor="difficulty">Difficulty</label>
-                        <input onChange={(event) => this.handleRangeChange(event)} type="range" id="difficulty" name="difficulty"  min="25" max="125" step="50"/>
-                        <h2>{this.state.difficultyText}</h2>
+                        <div className="form-section">
+                            <label htmlFor="difficulty">Difficulty</label>
+                            <input onChange={(event) => this.handleRangeChange(event)} type="range" id="difficulty" name="difficulty"  min="25" max="125" step="50"/>
+                            <h2>{this.state.difficultyText}</h2>
+                            <i className="fa-solid fa-circle-info">
+                                <span className="tooltip">AOVNJAOWINBAJBNIAWBAWBNIBIAOW</span>
+                            </i>
 
-                        <label htmlFor="time">Time</label>
-                        <input onChange={(event) => this.handleTimeChange(event)} type="range" id="time" name="time"  min="25" max="125" step="25"/>
-                        <h2>{this.state.timeText}</h2>
+
+                        </div>
+
+
+                        <div className="form-section">
+                            <label htmlFor="time">Time</label>
+                            <input onChange={(event) => this.handleTimeChange(event)} type="range" id="time" name="time"  min="25" max="125" step="25"/>
+                            <h2>{this.state.timeText}</h2>
+                            <i className="fa-solid fa-circle-info">
+                                <span className="tooltip">AOVNJAOWINBAJBNIAWBAWBNIBIAOW</span>
+                            </i>
+
+                        </div>
+
                     </form>
+
                     <button onClick={() => this.handleStartClick()}>
                         Start
                     </button>
+
+
+                    
+                    
 
                 </div>
             )
