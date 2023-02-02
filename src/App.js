@@ -155,6 +155,14 @@ class Game extends React.Component {
           }
     }
 
+    displayTime() {
+        if(this.props.timeText === "Zen Mode") {
+            return <i className="fa-solid fa-infinity"></i>
+        } else {
+            return this.state.timeLeft
+        }
+    }
+
     render() {
         this.startTimer();
 
@@ -162,7 +170,9 @@ class Game extends React.Component {
             <div className="game">
                 <div className="text-array">
                     <h2>{"Score: " + this.state.score}</h2>
-                    <h2 className={(this.state.timeLeft <= 10 && this.state.timeLeft % 2 === 0) ? "red" : ""}>{this.state.timeLeft}</h2>
+                    <h2 className={(this.state.timeLeft <= 10 && this.state.timeLeft % 2 === 0 && this.props.timeText !== "Zen Mode") ? "red" : ""}>
+                        {this.displayTime()}
+                    </h2>
                 </div>
 
                 <Pokemon url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + (this.state.dexNumber) + ".png"}
@@ -285,7 +295,7 @@ class App extends React.Component {
         
     }
     renderGame() {
-        return this.state.active ? <Game difficulty={this.state.difficultyText} timeLeft={this.state.time}/> : null
+        return this.state.active ? <Game difficulty={this.state.difficultyText} timeText={this.state.timeText} timeLeft={this.state.time}/> : null
     }
     
 
