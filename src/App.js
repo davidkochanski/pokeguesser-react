@@ -5,7 +5,7 @@ const POKEMON = P.POKEMON;
 
 function Pokemon(props) {
     return (
-        <img className="mon" src={"" + props.url} alt="" onClick={props.onClick}/>
+        <img className="mon glass" src={"" + props.url} alt="" onClick={props.onClick}/>
     )
 }
 
@@ -38,15 +38,13 @@ class Game extends React.Component {
         super(props);
         let dex = this.getRandomDexNumber()
 
-
-        // TODO Put timer in super class
         this.state = {
             dexNumber: dex,
             guess: "",
             hintMessage: "",
             hintDisabled: false,
             lineText: this.getInitialLineText(dex),
-            timeLeft: this.props.initialTime,
+            initialTime: this.props.initialTime,
             difficulty: this.props.difficultyText,
 
             score: 0,
@@ -139,43 +137,18 @@ class Game extends React.Component {
             }
             this.setState( {lineText: s.trim(), combo: 0} ) 
         }
-
-    
     }
 
-    // countDown() {
-    //     this.setState( {timeLeft: this.state.timeLeft - 1} );
-        
-    //     if (this.state.timeLeft === 1) {
-    //         clearInterval(this.timer);
-    //     }
-    // }
-
-    // startTimer() {
-    //     if (this.timer === 0 && this.state.timeLeft > 0) {
-    //         this.timer = setInterval(this.countDown, 1000);
-    //       }
-    // }
 
     displayTime() {
-        if(this.props.timeText === "Zen Mode") {
+        if(this.props.initialTime === "Zen Mode") {
             return <i className="fa-solid fa-infinity"></i>
         } else {
             return this.props.currentTime;
         }
     }
 
-    gameReset() {
-        
-
-    }
-
-    
-
-
-
     render() {
-
         return (
                 <div ref={this.gameState} className="game">
                     <div className="text-array">
@@ -203,12 +176,8 @@ class Game extends React.Component {
                     </button>
                     
                 </div>
-                <h3>{this.state.difficulty}</h3>
-                <h3>{this.state.monsGuessed} | {this.state.monsSkipped} | {this.state.hintsTaken}</h3>
                 <h3>{this.state.hintMessage}</h3>
                 <p className="combo" key={this.state.combo}>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</p>
-
-
                 </div>
 
         );
@@ -216,46 +185,41 @@ class Game extends React.Component {
 }
 
 
-class Menu extends React.Component {
-    render() {
-            
-        return (
-            <div className="start">
-                <form>
-                    <div className="form-section">
-                        <label htmlFor="difficulty">Difficulty</label>
-                        <input onChange={(event) => this.props.difficultyChange(event)} type="range" id="difficulty" name="difficulty"  min="25" max="125" step="50"/>
-                        <h2>{this.props.difficultyText}</h2>
-                        <i className="fa-solid fa-circle-info">
-                            <span className="tooltip">
-                                <div className="tooltip-header"><strong>Easy Mode</strong></div>
-                                <div className="tooltip-text">Contains only the first 151 Pokemon from Generation 1. Great place to start.</div>
+function Menu(props) {
+    return (
+        <div className="start">
+            <form>
+                <div className="form-section">
+                    <label htmlFor="difficulty">Difficulty</label>
+                    <input onChange={(event) => props.difficultyChange(event)} type="range" id="difficulty" name="difficulty"  min="25" max="125" step="50"/>
+                    <h2>{props.difficultyText}</h2>
+                    <i className="fa-solid fa-circle-info">
+                        <span className="tooltip glass">
+                            <div className="tooltip-header"><strong>Easy Mode</strong></div>
+                            <div className="tooltip-text">Contains only the first 151 Pokemon from Generation 1. Great place to start.</div>
 
-                                <div className="tooltip-header"><strong>Normal Mode</strong></div>
-                                <div className="tooltip-text">All 1008 Pokemon are fair game.</div>
+                            <div className="tooltip-header"><strong>Normal Mode</strong></div>
+                            <div className="tooltip-text">All 1008 Pokemon are fair game.</div>
 
-                                <div className="tooltip-header"><strong>Hard Mode</strong></div>
-                                <div className="tooltip-text">All 1008 Pokemon, AND no letter hints are granted. Only for true Pokemon Masters.</div>
-                            </span>
-                        </i>
-                    </div>
+                            <div className="tooltip-header"><strong>Hard Mode</strong></div>
+                            <div className="tooltip-text">All 1008 Pokemon, AND no letter hints are granted. Only for true Pokemon Masters.</div>
+                        </span>
+                    </i>
+                </div>
 
-                    <div className="form-section">
-                        <label htmlFor="time">Time</label>
-                        <input onChange={(event) => this.props.timeChange(event)} type="range" id="time" name="time"  min="25" max="125" step="25"/>
-                        <h2>{this.props.timeText}</h2>
-                        <i className="fa-solid">
-                            {/* pass */}
-                        </i>
-                    </div>
-                </form>
+                <div className="form-section">
+                    <label htmlFor="time">Time</label>
+                    <input onChange={(event) => props.timeChange(event)} type="range" id="time" name="time"  min="25" max="125" step="25"/>
+                    <h2>{props.timeText}</h2>
+                    <i className="fa-solid"></i>
+                </div>
+            </form>
 
-                <button onClick={(event) => this.props.startButton(event)}>
-                    Start
-                </button>
-            </div>
-        )
-    }
+            <button onClick={(event) => props.startButton(event)}>
+                Start
+            </button>
+        </div>
+    )
 }
 
 
@@ -263,8 +227,6 @@ class Menu extends React.Component {
 class App extends React.Component {
     constructor(props) {
         super(props);
-
-        this.gameState = React.createRef();
 
         this.handleDifficultyChange = this.handleDifficultyChange.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
@@ -275,19 +237,14 @@ class App extends React.Component {
         this.state = {
             difficultyText: "Normal",
             timeText: "1 min",
-            time: 10,
+            time: 1,
             gameActive: false,
             
         }
 
+        this.gameState = React.createRef();
         this.timer = 0;
-
     }
-
-
-    // renderGame() {
-    //     return this.state.active ? <Game difficulty={this.state.difficultyText} timeText={this.state.timeText} timeLeft={this.state.time}/> : null
-    // }
 
     handleDifficultyChange(event) {
         let e = event.target.value;
@@ -362,9 +319,9 @@ class App extends React.Component {
                 return (
                     <Game
                         ref={this.gameState}
-                        initialTime={this.state.time}
                         difficulty={this.state.difficultyText}
                         currentTime={this.state.time}
+                        initialTime={this.state.timeText}
                     />
             )
         }
@@ -378,14 +335,63 @@ class App extends React.Component {
             return (
                 <div className="modal">
                     <div className="modal-content">
+                        <i id="close-button" onClick={(event) => this.handleStartButton(event)} className="fa-solid fa-x"></i>
                         <h2>Time's Up!</h2>
-                        <p>Score: {gameState.state.score}</p>
-                        <p>Mons Skipped: {gameState.state.monsSkipped}</p>
-                        <p>Hints Used: {gameState.state.hintsTaken}</p>
-                        <p>Max Combo Attained: {gameState.state.maxCombo}</p>
+                        <div className="stats">
+                            <div className="stats-section">
+                                <p>Score</p> 
+                                <svg>
+                                    <circle cx="50%" cy="50%" r="40%" stroke="#34b233" stroke-width="5" fill="#34b23333" />
+                                    <text className="stats-number" x="50%" y="50%" text-anchor="middle" fill="white" stroke="white" stroke-width="2px" dy=".35em">{gameState.state.score}</text>
+
+                                </svg> 
+
+                                {/* <h2 className="stats-number">{gameState.state.score}</h2> */}
+                            </div>
+
+                            <div className="stats-section">
+                                <p>Mons Skipped</p>
+                                <svg>
+                                    <circle cx="50%" cy="50%" r="40%" stroke="#ff0033" stroke-width="5" fill="#ff003333" />
+                                    <text className="stats-number" x="50%" y="50%" text-anchor="middle" fill="white" stroke="white" stroke-width="2px" dy=".35em">{gameState.state.monsSkipped}</text>
+                                </svg> 
+
+                                {/* <h2 className="stats-number">{gameState.state.monsSkipped}</h2> */}
+                            </div>
+
+                            <div className="stats-section">
+                                <p>Hints Used</p>
+                                <svg>
+                                    <circle cx="50%" cy="50%" r="40%" stroke="#1bada6" stroke-width="5" fill="#1bada633" />
+                                    <text className="stats-number" x="50%" y="50%" text-anchor="middle" fill="white" stroke="white" stroke-width="2px" dy=".35em">{gameState.state.hintsTaken}</text>
+
+                                </svg> 
+
+                                
+                                {/* <h2 className="stats-number">{gameState.state.hintsTaken}</h2> */}
+                            </div>
+
+                            <div className="stats-section">
+                                <p>Max Combo</p>
+                                <svg>
+                                    <circle cx="50%" cy="50%" r="40%" stroke="#dbac16" stroke-width="5" fill="#dbac1633" />
+                                    <text className="stats-number" x="50%" y="50%" text-anchor="middle" fill="white" stroke="white" stroke-width="2px" dy=".35em">{gameState.state.maxCombo}</text>
+
+                                </svg> 
+
+                                {/* <h2 className="stats-number">{gameState.state.maxCombo}</h2> */}
+                            </div>
+
+
+                        </div>
 
 
                         <button onClick={(event) => this.handleStartButton(event)}>Play Again?</button>
+
+                        <i id="share-button" onClick={navigator.clipboard.writeText(
+                            `I got a score of ${gameState.state.score} mons guessed! https://www.pokeguesser.io/`
+                        )} className="fa-solid fa-share-alt"></i>
+
 
                     </div>
                 </div>
