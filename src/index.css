@@ -77,7 +77,7 @@ header h1 {
     padding: 0;
 }
 
-.game, .start, #game {
+.game, .start, #root {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -189,8 +189,8 @@ button:hover {
 #close-button {
     position: absolute;
     top: 20px;
-    right: 0;
-    font-size: 25px;
+    right: 5px;
+    font-size: 27px;
     width: 40px;
     height: 40px;
 }
@@ -250,7 +250,7 @@ i:hover {
 }
 
 
-#game .combo {
+#root .combo {
     animation: 0.5s ease-out 0s rollout;
     font-size: 20px;
 }
@@ -308,9 +308,14 @@ footer {
     width: 100%;
     text-align: center;
 
+}
+
+.modal-content h3 {
+    width: 100%;
+    font-size: 16px;
     border-bottom: 1px solid white;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
+    margin: 2px 0 10px;
+    padding-bottom: 8px;
 }
 
 .modal-content svg {

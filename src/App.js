@@ -127,7 +127,7 @@ class Game extends React.Component {
 
         } else if(guess === correct) {
             this.setState( {score: this.state.score + 1, combo: this.state.combo + 1, monsGuessed: this.state.monsGuessed + 1} )
-            if(this.state.combo > this.state.maxCombo) this.setState( {maxCombo: this.state.combo} )
+            if(this.state.combo > this.state.maxCombo) this.setState( {maxCombo: this.state.combo + 1} )
             this.newPokemon(false);
 
         } else {
@@ -148,12 +148,23 @@ class Game extends React.Component {
         }
     }
 
+    renderZenModeButton() {
+        if(this.props.initialTime === "Zen Mode") {
+            return (
+                <button onClick={this.props.endZenMode}>
+                    {"Finish"}
+                </button>
+
+            )
+        }
+    }
+
     render() {
         return (
                 <div ref={this.gameState} className="game">
                     <div className="text-array">
                         <h2>{"Score: " + this.state.score}</h2>
-                        <h2 className={(this.props.currentTime <= 10 && this.props.currentTime % 2 === 0 && this.props.timeText !== "Zen Mode") ? "red" : ""}>
+                        <h2 className={(this.props.currentTime <= 10 && this.props.currentTime % 2 === 0 && this.props.initialTime !== "Zen Mode") ? "red" : ""}>
                             {this.displayTime()}
                         </h2>
                     </div>
@@ -176,6 +187,8 @@ class Game extends React.Component {
                     </button>
                     
                 </div>
+                {this.renderZenModeButton()}
+
                 <h3>{this.state.hintMessage}</h3>
                 <p className="combo" key={this.state.combo}>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</p>
                 </div>
@@ -231,6 +244,7 @@ class App extends React.Component {
         this.handleDifficultyChange = this.handleDifficultyChange.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
         this.handleStartButton = this.handleStartButton.bind(this);
+        this.endZenMode = this.endZenMode.bind(this);
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
 
@@ -280,7 +294,7 @@ class App extends React.Component {
 
     handleStartButton(event) {
         this.setState( {gameActive: !this.state.gameActive} )
-        if(this.state.time === 0) this.setState( {time: 61} )
+        if(this.state.time === 0) this.setState( {time: 60, timeText: "1 min", difficultyText: "Normal" } )
     }
 
 
@@ -298,6 +312,13 @@ class App extends React.Component {
             clearInterval(this.timer);
             this.timer = 0;
         }
+    }
+
+    endZenMode() {
+        clearInterval(this.timer);
+        this.timer = 0;
+        this.setState( {time: 0} )
+        
     }
 
     renderMenu() {
@@ -322,6 +343,7 @@ class App extends React.Component {
                         difficulty={this.state.difficultyText}
                         currentTime={this.state.time}
                         initialTime={this.state.timeText}
+                        endZenMode={this.endZenMode}
                     />
             )
         }
@@ -336,59 +358,50 @@ class App extends React.Component {
                 <div className="modal">
                     <div className="modal-content">
                         <i id="close-button" onClick={(event) => this.handleStartButton(event)} className="fa-solid fa-x"></i>
-                        <h2>Time's Up!</h2>
+                        <h2>{this.state.timeText === "Zen Mode" ? "Finish" : "Time's Up!"}</h2>
+                        <h3>{this.state.timeText} on {this.state.difficultyText}</h3>
+                        
                         <div className="stats">
                             <div className="stats-section">
                                 <p>Score</p> 
                                 <svg>
-                                    <circle cx="50%" cy="50%" r="40%" stroke="#34b233" stroke-width="5" fill="#34b23333" />
-                                    <text className="stats-number" x="50%" y="50%" text-anchor="middle" fill="white" stroke="white" stroke-width="2px" dy=".35em">{gameState.state.score}</text>
+                                    <circle cx="50%" cy="50%" r="40%" stroke="#34b233" strokeWidth="5" fill="#34b23333" />
+                                    <text className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">{gameState.state.score}</text>
 
                                 </svg> 
-
-                                {/* <h2 className="stats-number">{gameState.state.score}</h2> */}
                             </div>
 
                             <div className="stats-section">
                                 <p>Mons Skipped</p>
                                 <svg>
-                                    <circle cx="50%" cy="50%" r="40%" stroke="#ff0033" stroke-width="5" fill="#ff003333" />
-                                    <text className="stats-number" x="50%" y="50%" text-anchor="middle" fill="white" stroke="white" stroke-width="2px" dy=".35em">{gameState.state.monsSkipped}</text>
+                                    <circle cx="50%" cy="50%" r="40%" stroke="#ff0033" strokeWidth="5" fill="#ff003333" />
+                                    <text className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">{gameState.state.monsSkipped}</text>
                                 </svg> 
-
-                                {/* <h2 className="stats-number">{gameState.state.monsSkipped}</h2> */}
                             </div>
 
                             <div className="stats-section">
                                 <p>Hints Used</p>
                                 <svg>
-                                    <circle cx="50%" cy="50%" r="40%" stroke="#1bada6" stroke-width="5" fill="#1bada633" />
-                                    <text className="stats-number" x="50%" y="50%" text-anchor="middle" fill="white" stroke="white" stroke-width="2px" dy=".35em">{gameState.state.hintsTaken}</text>
+                                    <circle cx="50%" cy="50%" r="40%" stroke="#1bada6" strokeWidth="5" fill="#1bada633" />
+                                    <text className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">{gameState.state.hintsTaken}</text>
 
                                 </svg> 
-
-                                
-                                {/* <h2 className="stats-number">{gameState.state.hintsTaken}</h2> */}
                             </div>
 
                             <div className="stats-section">
-                                <p>Max Combo</p>
+                                <p>Best Combo</p>
                                 <svg>
-                                    <circle cx="50%" cy="50%" r="40%" stroke="#dbac16" stroke-width="5" fill="#dbac1633" />
-                                    <text className="stats-number" x="50%" y="50%" text-anchor="middle" fill="white" stroke="white" stroke-width="2px" dy=".35em">{gameState.state.maxCombo}</text>
+                                    <circle cx="50%" cy="50%" r="40%" stroke="#dbac16" strokeWidth="5" fill="#dbac1633" />
+                                    <text className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">{gameState.state.maxCombo}</text>
 
                                 </svg> 
-
-                                {/* <h2 className="stats-number">{gameState.state.maxCombo}</h2> */}
                             </div>
-
-
                         </div>
 
 
                         <button onClick={(event) => this.handleStartButton(event)}>Play Again?</button>
 
-                        <i id="share-button" onClick={navigator.clipboard.writeText(
+                        <i id="share-button" onClick={() => navigator.clipboard.writeText(
                             `I got a score of ${gameState.state.score} mons guessed! https://www.pokeguesser.io/`
                         )} className="fa-solid fa-share-alt"></i>
 
