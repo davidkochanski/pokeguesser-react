@@ -38,6 +38,7 @@ class Game extends React.Component {
         super(props);
         let dex = this.getRandomDexNumber()
 
+
         // TODO Put timer in super class
         this.state = {
             dexNumber: dex,
@@ -45,22 +46,21 @@ class Game extends React.Component {
             hintMessage: "",
             hintDisabled: false,
             lineText: this.getInitialLineText(dex),
-            score: 0,
-            // timeLeft: this.props.timeLeft,
             timeLeft: this.props.initialTime,
-            combo: 0,
             difficulty: this.props.difficultyText,
+
+            score: 0,
+            combo: 0,
+            maxCombo: 0,
             monsSkipped: 0,
             monsGuessed: 0,
-            hintsTaken: 0
+            hintsTaken: 0,
             
         }
         this.handleImageClick = this.newPokemon.bind(this);
         this.handleHintClick = this.handleHintClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
-        // this.timer = 0;
         
     }
 
@@ -129,6 +129,7 @@ class Game extends React.Component {
 
         } else if(guess === correct) {
             this.setState( {score: this.state.score + 1, combo: this.state.combo + 1, monsGuessed: this.state.monsGuessed + 1} )
+            if(this.state.combo > this.state.maxCombo) this.setState( {maxCombo: this.state.combo} )
             this.newPokemon(false);
 
         } else {
@@ -169,34 +170,17 @@ class Game extends React.Component {
 
     }
 
-    renderGameOver() {
-        if(this.state.timeLeft === 0) {
-            return (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h2>Time's Up!</h2>
-                        <p>Score: {this.state.score}</p>
-                        <p>Mons Skipped: {this.state.monsSkipped}</p>
-                        <p>Hints Used: {this.state.hintsTaken}</p>
-
-
-                        <button onClick={() => this.gameReset()}>Play Again?</button>
-
-                    </div>
-                </div>
-            )
-        }
-    }
+    
 
 
 
     render() {
 
         return (
-                <div className="game">
+                <div ref={this.gameState} className="game">
                     <div className="text-array">
                         <h2>{"Score: " + this.state.score}</h2>
-                        <h2 className={(this.state.timeLeft <= 10 && this.state.timeLeft % 2 === 0 && this.props.timeText !== "Zen Mode") ? "red" : ""}>
+                        <h2 className={(this.props.currentTime <= 10 && this.props.currentTime % 2 === 0 && this.props.timeText !== "Zen Mode") ? "red" : ""}>
                             {this.displayTime()}
                         </h2>
                     </div>
@@ -206,7 +190,7 @@ class Game extends React.Component {
                             
                 <div>
                     <form onSubmit={this.handleSubmit}>
-                        <input type="text" value={this.state.guess} onChange={(event) => this.handleInputChange(event)}/>
+                        <input disabled={this.props.currentTime === 0} type="text" value={this.state.guess} onChange={(event) => this.handleInputChange(event)}/>
                     </form>
                     <p className="linetext">{this.state.lineText}</p>
                 </div>
@@ -225,8 +209,6 @@ class Game extends React.Component {
                 <p className="combo" key={this.state.combo}>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</p>
 
 
-                {this.renderGameOver()}
-
                 </div>
 
         );
@@ -235,18 +217,6 @@ class Game extends React.Component {
 
 
 class Menu extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            active: false,
-            difficultyText: "Normal",
-            time: 60,
-            timeText: "1 min"
-        }
-    }
-
-
     render() {
             
         return (
@@ -285,7 +255,7 @@ class Menu extends React.Component {
                 </button>
             </div>
         )
-        }
+    }
 }
 
 
@@ -293,6 +263,8 @@ class Menu extends React.Component {
 class App extends React.Component {
     constructor(props) {
         super(props);
+
+        this.gameState = React.createRef();
 
         this.handleDifficultyChange = this.handleDifficultyChange.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
@@ -303,10 +275,9 @@ class App extends React.Component {
         this.state = {
             difficultyText: "Normal",
             timeText: "1 min",
-            time: 60,
+            time: 10,
             gameActive: false,
-
-
+            
         }
 
         this.timer = 0;
@@ -332,31 +303,34 @@ class App extends React.Component {
     handleTimeChange(event) {
         let e = event.target.value;
         if(e === "25") {
-            this.setState( {time: 31, timeText: "30 sec"} )
+            this.setState( {time: 30, timeText: "30 sec"} )
 
         } else if(e === "50") {
-            this.setState( {time: 62, timeText: "1 min"} )
+            this.setState( {time: 60, timeText: "1 min"} )
 
         } else if(e === "75") {
-            this.setState( {time: 181, timeText: "3 min"} )
+            this.setState( {time: 180, timeText: "3 min"} )
 
         } else if(e === "100") {
-            this.setState( {time: 301, timeText: "5 min"} )
+            this.setState( {time: 300, timeText: "5 min"} )
 
         } else if(e === "125") {
             this.setState( {time: 999999999, timeText: "Zen Mode"} )
         }
     }
 
+
+
     handleStartButton(event) {
         this.setState( {gameActive: !this.state.gameActive} )
+        if(this.state.time === 0) this.setState( {time: 61} )
     }
 
 
     startTimer() {
         if (this.timer === 0 && this.state.time > 0) {
             this.timer = setInterval(this.countDown, 1000);
-          }
+        }
     }
 
 
@@ -365,6 +339,7 @@ class App extends React.Component {
 
         if (this.state.time === 1) {
             clearInterval(this.timer);
+            this.timer = 0;
         }
     }
 
@@ -381,23 +356,52 @@ class App extends React.Component {
     }
 
     renderGame() {
-        if(this.state.gameActive) return (
-            <Game
-                initialTime={this.state.time}
-                difficulty={this.state.difficultyText}
-                currentTime={this.state.time}
-            />
-        )
+        if(this.state.gameActive) {
+            this.startTimer();
+        
+                return (
+                    <Game
+                        ref={this.gameState}
+                        initialTime={this.state.time}
+                        difficulty={this.state.difficultyText}
+                        currentTime={this.state.time}
+                    />
+            )
+        }
+    }
+
+    renderGameOver() {
+        if(this.state.time === 0) {
+
+            const gameState = this.gameState.current;
+    
+            return (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>Time's Up!</h2>
+                        <p>Score: {gameState.state.score}</p>
+                        <p>Mons Skipped: {gameState.state.monsSkipped}</p>
+                        <p>Hints Used: {gameState.state.hintsTaken}</p>
+                        <p>Max Combo Attained: {gameState.state.maxCombo}</p>
+
+
+                        <button onClick={(event) => this.handleStartButton(event)}>Play Again?</button>
+
+                    </div>
+                </div>
+            )
+        }
     }
     
 
     render() {
-        this.startTimer();
+
 
         return (
             <div>
                 {this.renderMenu()}
                 {this.renderGame()}
+                {this.renderGameOver()}
             </div>
         )
     }
