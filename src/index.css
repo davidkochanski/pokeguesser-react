@@ -297,7 +297,6 @@ footer {
     align-items: center;
     margin-top: 100px;
     text-align: center;
-
 }
 
 .modal {
@@ -362,6 +361,25 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    animation: rollout 0.5s ease-out;
+    animation-fill-mode: forwards;
+    opacity: 0;
+}
+
+.stats-section:first-of-type {
+    animation-delay: 0.75s;
+}
+
+.stats-section:nth-of-type(2) {
+    animation-delay: 1.5s;
+}
+
+.stats-section:nth-of-type(3) {
+    animation-delay: 2.25s;
+}
+
+.stats-section:nth-of-type(4) {
+    animation-delay: 3s;
 }
 
 .modal-content .stats {
