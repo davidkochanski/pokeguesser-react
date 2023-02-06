@@ -402,7 +402,7 @@ class App extends React.Component {
                         <button onClick={(event) => this.handleStartButton(event)}>Play Again?</button>
 
                         <i id="share-button" onClick={() => navigator.clipboard.writeText(
-                            `I got a score of ${gameState.state.score} mons guessed! https://www.pokeguesser.io/`
+                            `I got a score of ${gameState.state.score} mons guessed in ${this.state.timeText} on ${this.state.difficultyText} mode! https://www.pokeguesser.io/`
                         )} className="fa-solid fa-share-alt"></i>
 
 
