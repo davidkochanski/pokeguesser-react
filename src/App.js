@@ -182,12 +182,13 @@ class Game extends React.Component {
                     <button onClick={() => this.newPokemon(true)}>
                         {"Pass"}
                     </button>
+                {this.renderZenModeButton()}
+
                     <button onClick={() => this.handleHintClick()}>
                         {"Hint"}
                     </button>
                     
                 </div>
-                {this.renderZenModeButton()}
 
                 <h3>{this.state.hintMessage}</h3>
                 <p className="combo" key={this.state.combo}>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</p>
@@ -286,7 +287,7 @@ class App extends React.Component {
             this.setState( {time: 300, timeText: "5 min"} )
 
         } else if(e === "125") {
-            this.setState( {time: 999999999, timeText: "Zen Mode"} )
+            this.setState( {time: -1, timeText: "Zen Mode"} )
         }
     }
 
@@ -319,6 +320,13 @@ class App extends React.Component {
         this.timer = 0;
         this.setState( {time: 0} )
         
+    }
+
+    handleShare(score) {
+        navigator.clipboard.writeText(
+            `I got a score of ${score} mons guessed in ${this.state.timeText} on ${this.state.difficultyText.toLocaleLowerCase()} mode! https://www.pokeguesser.io/`
+        )
+        console.log("Copied!");
     }
 
     renderMenu() {
@@ -401,11 +409,11 @@ class App extends React.Component {
 
                         <button onClick={(event) => this.handleStartButton(event)}>Play Again?</button>
 
-                        <i id="share-button" onClick={() => navigator.clipboard.writeText(
-                            `I got a score of ${gameState.state.score} mons guessed in ${this.state.timeText} on ${this.state.difficultyText} mode! https://www.pokeguesser.io/`
-                        )} className="fa-solid fa-share-alt"></i>
-
-
+                        <i id="share-button" onClick={() => this.handleShare(gameState.state.score)} className="fa-solid fa-share-alt">
+                            <span className="tooltip glass">
+                                <div className="tooltip-header"><strong>Copied!</strong></div>
+                            </span>
+                        </i>
                     </div>
                 </div>
             )

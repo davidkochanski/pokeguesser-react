@@ -117,6 +117,7 @@ label {
 
 .mon {
     width: 100%;
+    aspect-ratio: 1/1;
     margin: 15px 0 30px;
     padding: 30px;
     pointer-events: none;
@@ -142,6 +143,11 @@ p {
     width: 100%;
     display: flex;
     justify-content: space-evenly;
+    padding: 0 50px;
+}
+
+.button-array > * {
+    flex: 1 1 0;
 }
 
 .text-array {
@@ -162,8 +168,7 @@ button {
     border-radius: 10px;
     outline: 2px solid black;
     transition: all 0.25s;
-    min-width: 175px;
-    width: 50%;
+    min-width: 170px;
 }
 
 button:hover {
@@ -258,12 +263,30 @@ i:hover {
     margin-bottom: 0;
 }
 
-.form-section > i:hover > .tooltip, .tooltip:hover {
+i:hover > .tooltip, .tooltip:hover {
     display: block;
 }
 
+#share-button:hover .tooltip {
+    display: none;
+}
 
-#root .combo {
+#share-button:active .tooltip {
+    display: block;
+}
+
+#share-button .tooltip {
+    font-size: 20px;
+    width: fit-content;
+    width: 120px;
+    margin-right: -150px;
+    right: 105%;
+    left: unset;
+    translate: 20px -75%;
+}
+
+
+.combo {
     animation: 0.5s ease-out 0s rollout;
     font-size: 20px;
 }
@@ -284,7 +307,7 @@ footer {
     animation: blur 0.5s;
     backdrop-filter: blur(4px);
     background-color: rgba(0 0 0 / 0.4);
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
 
@@ -389,6 +412,28 @@ footer {
 
     to {
         backdrop-filter: blur(4px);
+    }
+}
+
+@keyframes shake {
+    0% {
+        translate: 0px;
+    }
+
+    25% {
+        translate: -10px;
+    }
+
+    50% {
+        translate: 0px;
+    }
+
+    75% {
+        translate: 10px;
+    }
+
+    100% {
+        translate: 0px;
     }
 }
 
