@@ -1,5 +1,5 @@
 import React from 'react';
-import './main.css';
+
 const P = require("./pokemon.js");
 const POKEMON = P.POKEMON;
 
@@ -185,13 +185,12 @@ class Game extends React.Component {
                     <button onClick={() => this.newPokemon(true)}>
                         {"Pass"}
                     </button>
-                {this.renderZenModeButton()}
-
                     <button onClick={() => this.handleHintClick()}>
                         {"Hint"}
                     </button>
-                    
                 </div>
+                {this.renderZenModeButton()}
+
 
                 <h3>{this.state.hintMessage}</h3>
                 <p className="combo" key={this.state.combo}>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</p>
@@ -360,6 +359,7 @@ class App extends React.Component {
         }
     }
 
+
     renderGameOver() {
         if(this.state.time === 0) {
 
@@ -377,7 +377,9 @@ class App extends React.Component {
                                 <p>Score</p> 
                                 <svg>
                                     <circle cx="50%" cy="50%" r="40%" stroke="#34b233" strokeWidth="5" fill="#34b23333" />
-                                    <text className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">{gameState.state.score}</text>
+                                    <text id="text-1" className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">
+                                        {gameState.state.score}
+                                    </text>
                                 </svg> 
                             </div>
 
@@ -385,7 +387,9 @@ class App extends React.Component {
                                 <p>Mons Skipped</p>
                                 <svg>
                                     <circle cx="50%" cy="50%" r="40%" stroke="#ff0033" strokeWidth="5" fill="#ff003333" />
-                                    <text className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">{gameState.state.monsSkipped}</text>
+                                    <text id="text-2" className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">
+                                        {gameState.state.monsSkipped}
+                                    </text>
                                 </svg> 
                             </div>
 
@@ -393,8 +397,9 @@ class App extends React.Component {
                                 <p>Hints Used</p>
                                 <svg>
                                     <circle cx="50%" cy="50%" r="40%" stroke="#1bada6" strokeWidth="5" fill="#1bada633" />
-                                    <text className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">{gameState.state.hintsTaken}</text>
-
+                                    <text id="text-3" className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">
+                                        {gameState.state.hintsTaken}
+                                    </text>
                                 </svg> 
                             </div>
 
@@ -402,7 +407,9 @@ class App extends React.Component {
                                 <p>Best Combo</p>
                                 <svg>
                                     <circle cx="50%" cy="50%" r="40%" stroke="#dbac16" strokeWidth="5" fill="#dbac1633" />
-                                    <text className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">{gameState.state.maxCombo}</text>
+                                    <text id="text-4" className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">
+                                        {gameState.state.maxCombo}
+                                    </text>
 
                                 </svg> 
                             </div>

@@ -239,6 +239,7 @@ i:hover {
     translate: 0 -50%;
     margin-left: -300px;
     height: fit-content;
+    font-size: 18px;
 }
 
 .light .tooltip {
@@ -268,11 +269,12 @@ i:hover > .tooltip, .tooltip:hover {
 }
 
 #share-button:hover .tooltip {
-    display: none;
+    transition: all 0.25s ease-out;
+    opacity: 0;
 }
 
 #share-button:active .tooltip {
-    display: block;
+    opacity: 1;
 }
 
 #share-button .tooltip {
@@ -315,7 +317,8 @@ footer {
 }
 
 .modal > .modal-content {
-    width: 500px;
+    max-width: 500px;
+    width: 98%;
     height: fit-content;
     animation: rollout 1s;
     position: relative;
@@ -385,7 +388,8 @@ footer {
 .modal-content .stats {
     display: grid;
     place-items: center;
-    width: 480px;
+    width: 98%;
+    min-width: 400px;
     height: 400px;
     border-bottom: 1px solid white;
     margin-bottom: 10px;
@@ -455,7 +459,42 @@ footer {
     }
 } */
 
-/* @media only screen and (max-width: 768px) {
-    
+@media only screen and (max-width: 768px) {
+    .text-array {
+       width: 75%;
+    }
 
-} */
+    #share-button .tooltip {
+        font-size: 20px;
+        width: fit-content;
+        width: 120px;
+        margin-left: -150px;
+        left: 105%;
+        right: unset;
+        translate: -5px -75%;
+    }
+
+    .form-section h2 {
+        min-width: 100px;
+        font-size: 22px;
+        margin-left: 10px;
+    }
+
+    .mon {
+        width: 75%;
+    }   
+
+
+    #dark-toggle {
+        position: absolute;
+        font-size: 30px;
+        text-align: center;
+        right: 0;
+        height: 60px;
+        line-height: 60px;
+        width: 60px;
+        margin: 15px 0;
+        cursor: pointer;
+        padding: 0;
+    }
+}
