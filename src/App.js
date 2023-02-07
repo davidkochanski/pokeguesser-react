@@ -96,10 +96,12 @@ class Game extends React.Component {
 
         let txt = this.state.lineText;
 
+        // If no blanks are fulled, fill the first and last one
         if(txt[0] === "_" && txt[txt.length-1] === "_") {
 
             this.setState( {lineText: mon[0] + txt.slice(1, -1) + mon[end], hintsTaken: this.state.hintsTaken + 1} )
-
+        
+        // If a blank was already filled, instead fill the left-most still not filled blank
         } else {
             let idx = txt.indexOf("_");
             
@@ -120,16 +122,18 @@ class Game extends React.Component {
         let guess = event.target[0].value.toLowerCase();
         let correct = POKEMON[this.state.dexNumber]
 
-
+        // Empty input, skip shorthand
         if (guess === "") {
             this.newPokemon();
             this.setState( {combo: 0, monsSkipped: this.state.monsSkipped + 1} )
-
+        
+        // Correct input, update stats and get new Pokemon
         } else if(guess === correct) {
             this.setState( {score: this.state.score + 1, combo: this.state.combo + 1, monsGuessed: this.state.monsGuessed + 1} )
             if(this.state.combo > this.state.maxCombo) this.setState( {maxCombo: this.state.combo + 1} )
             this.newPokemon(false);
-
+        
+        // Incorrect input, display a hint filling correct indicies of letters
         } else {
             let s = ""
             for(let i = 0; i < correct.length; i++) {
@@ -154,7 +158,6 @@ class Game extends React.Component {
                 <button onClick={this.props.endZenMode}>
                     {"Finish"}
                 </button>
-
             )
         }
     }
@@ -375,7 +378,6 @@ class App extends React.Component {
                                 <svg>
                                     <circle cx="50%" cy="50%" r="40%" stroke="#34b233" strokeWidth="5" fill="#34b23333" />
                                     <text className="stats-number" x="50%" y="50%" textAnchor="middle" fill="white" stroke="white" strokeWidth="2px" dy=".35em">{gameState.state.score}</text>
-
                                 </svg> 
                             </div>
 
