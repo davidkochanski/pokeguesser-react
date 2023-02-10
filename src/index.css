@@ -460,8 +460,17 @@ footer {
 } */
 
 @media only screen and (max-width: 768px) {
+    body {
+        overflow: hidden;
+
+    }
     .text-array {
        width: 75%;
+    }
+
+    header h1 {
+        font-size: 40px;
+        line-height: 75px;
     }
 
     #share-button .tooltip {
@@ -480,6 +489,10 @@ footer {
         margin-left: 10px;
     }
 
+    .form-section label {
+        margin-right: 10px;
+    }
+
     .mon {
         width: 75%;
     }   
@@ -493,7 +506,7 @@ footer {
         height: 60px;
         line-height: 60px;
         width: 60px;
-        margin: 15px 0;
+        margin-top: 12px;
         cursor: pointer;
         padding: 0;
     }
