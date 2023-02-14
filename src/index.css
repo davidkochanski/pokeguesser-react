@@ -121,6 +121,7 @@ input {
 input[type=range] {
     display: block;
     width: 100%;
+    cursor: grab;
 }
 
 
@@ -148,7 +149,6 @@ p {
 
 .easy {
     color: rgba(52, 178, 51, 1);
-
 }
 
 .hard {
@@ -164,10 +164,10 @@ p {
     display: inline;
     font-size: 40px;
     line-height: 46px;
-    margin-left: 10px;
+    margin-left: 15px;
     color: rgba(52, 178, 51, 1);
     cursor: default !important;
-    animation: 0.5s rollout ease-out;
+    animation: 1s check-rollout ease-out;
 
 }
 
@@ -279,6 +279,7 @@ i:hover {
     margin-left: -300px;
     height: fit-content;
     font-size: 18px;
+    cursor: default;
 }
 
 .light .tooltip {
@@ -468,6 +469,27 @@ footer {
         translate: 0 0;
         opacity: 1;
     }
+}
+
+@keyframes check-rollout {
+    from {
+        translate: 0 5px;
+        opacity: 0.5;
+    }
+
+    50% {
+        translate: 0 0;
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.25;
+    }
+
 }
 
 @keyframes blur {
