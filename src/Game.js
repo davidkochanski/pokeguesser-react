@@ -6,7 +6,7 @@ const POKEMON = P.POKEMON;
 
 function Pokemon(props) {
     return (
-        <img className="mon glass" src={"" + props.url} alt="" onClick={props.onClick}/>
+        <img className={"mon glass"} src={"" + props.url} alt="" onClick={props.onClick}/>
     )
 }
 
@@ -54,6 +54,8 @@ export default class Game extends React.Component {
             monsSkipped: 0,
             monsGuessed: 0,
             hintsTaken: 0,
+            shake: false,
+            check: false
             
         }
         this.handleImageClick = this.newPokemon.bind(this);
@@ -130,13 +132,18 @@ export default class Game extends React.Component {
         
         // Correct input, update stats and get new Pokemon
         } else if(guess === correct) {
+            this.setState( {check: true} );
             this.setState( {score: this.state.score + 1, combo: this.state.combo + 1, monsGuessed: this.state.monsGuessed + 1} )
             if(this.state.combo > this.state.maxCombo) this.setState( {maxCombo: this.state.combo + 1} )
             this.newPokemon(false);
         
         // Incorrect input, display a hint filling correct indicies of letters
-        } else {
-            let s = ""
+        } else  {
+            this.setState( {shake: true} );
+
+            if(this.props.difficulty === "Hard") return;
+
+            let s = "";
             for(let i = 0; i < correct.length; i++) {
                 s += ((guess[i] === correct[i] || this.state.lineText[i*2] !== "_") ? correct[i] + " " : "_ ")
             }
@@ -178,7 +185,16 @@ export default class Game extends React.Component {
                             
                 <div>
                     <form onSubmit={this.handleSubmit}>
-                        <input disabled={this.props.currentTime === 0} type="text" value={this.state.guess} onChange={(event) => this.handleInputChange(event)}/>
+                        <input className={this.state.shake ? "shake " : ""} 
+                               onAnimationEnd={() => this.setState({shake: false})} 
+                               disabled={this.props.currentTime === 0} 
+                               type="text" 
+                               value={this.state.guess} 
+                               onChange={(event) => this.handleInputChange(event)}/>
+
+                        <i className={this.state.check ? "fas fa-circle-check check" : "fas fa-circle-check"}
+                            onAnimationEnd={() => this.setState({check: false})}>
+                        </i>
                     </form>
                     <p className="linetext">{this.state.lineText}</p>
                 </div>
@@ -194,7 +210,7 @@ export default class Game extends React.Component {
 
 
                 <h3>{this.state.hintMessage}</h3>
-                <p className="combo" key={this.state.combo}>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</p>
+                <p className={this.state.combo < 5 ? "combo" : "combo hot-combo"} key={this.state.combo}>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</p>
                 </div>
 
         );

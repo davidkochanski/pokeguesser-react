@@ -1,7 +1,6 @@
 import React from 'react';
 import Game from "./Game.js";
 
-const P = require("./pokemon.js");
 
 function Menu(props) {
     return (
@@ -56,7 +55,7 @@ class App extends React.Component {
         this.state = {
             difficultyText: "Normal",
             timeText: "1 min",
-            time: 1,
+            time: 60,
             gameActive: false,
             
         }

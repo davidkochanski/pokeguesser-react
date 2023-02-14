@@ -15,6 +15,15 @@ body {
     text-align: center;
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 .light {
     background-color: white;
     color: black;
@@ -25,11 +34,15 @@ body {
 }
 
 
+.hot-combo {
+    color: #e25822
+}
+
 
 .glass {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 30px rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -39,7 +52,7 @@ body {
 .light .glass {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -110,6 +123,7 @@ input[type=range] {
     width: 100%;
 }
 
+
 label {
     display: block;
     width: 100%;
@@ -130,6 +144,31 @@ label {
 p {
     font-size: 18px;
     padding-bottom: 8px;
+}
+
+.easy {
+    color: rgba(52, 178, 51, 1);
+
+}
+
+.hard {
+    color: #DC143C;
+}
+
+.fa-circle-check {
+    display: none;
+}
+
+.check {
+    position: absolute;
+    display: inline;
+    font-size: 40px;
+    line-height: 46px;
+    margin-left: 10px;
+    color: rgba(52, 178, 51, 1);
+    cursor: default !important;
+    animation: 0.5s rollout ease-out;
+
 }
 
 .linetext {
@@ -293,6 +332,10 @@ i:hover > .tooltip, .tooltip:hover {
     font-size: 20px;
 }
 
+.shake {
+    animation: 0.25s ease-out 0s shake;
+}
+
 footer {
     display: flex;
     flex-direction: column;
@@ -303,7 +346,7 @@ footer {
 
 .modal {
     display: flex;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     animation: blur 0.5s;
     backdrop-filter: blur(4px);
@@ -437,7 +480,7 @@ footer {
     }
 }
 
-/* @keyframes shake {
+@keyframes shake {
     0% {
         translate: 0px;
     }
@@ -457,7 +500,7 @@ footer {
     100% {
         translate: 0px;
     }
-} */
+}
 
 @media only screen and (max-width: 768px) {
     body {
