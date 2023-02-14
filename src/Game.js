@@ -180,9 +180,20 @@ export default class Game extends React.Component {
                         </h2>
                     </div>
 
-                    <Pokemon url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + (this.state.dexNumber) + ".png"}
-                            onClick={() => this.newPokemon(true)}/>
-                            
+                    <div className="mon-flex">
+                        <Pokemon url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + (this.state.dexNumber) + ".png"}
+                                onClick={() => this.newPokemon(true)}/>
+
+                        <div id="mobile-array" className="button-array">
+                            <button onClick={() => this.newPokemon(true)}>
+                                {"Pass"}
+                            </button>
+                            <button onClick={() => this.handleHintClick()}>
+                                {"Hint"}
+                            </button>
+                        </div>
+                    </div>
+            
                 <div>
                     <form onSubmit={this.handleSubmit}>
                         <input className={this.state.shake ? "shake " : ""} 
@@ -198,7 +209,7 @@ export default class Game extends React.Component {
                     </form>
                     <p className="linetext">{this.state.lineText}</p>
                 </div>
-                <div className="button-array">
+                <div id="desktop-array" className="button-array">
                     <button onClick={() => this.newPokemon(true)}>
                         {"Pass"}
                     </button>

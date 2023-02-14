@@ -130,12 +130,14 @@ label {
     width: 100%;
 }   
 
-.mon {
-    width: 100%;
-    aspect-ratio: 1/1;
+.mon-flex {
+    display: flex;
+    /* width: 100%; */
     margin: 15px 0 30px;
-    padding: 30px;
-    pointer-events: none;
+}
+
+.mon-flex .mon {
+    padding: 25px;
 }
 
 .red {
@@ -167,7 +169,7 @@ p {
     margin-left: 15px;
     color: rgba(52, 178, 51, 1);
     cursor: default !important;
-    animation: 1s check-rollout ease-out;
+    animation: 1s check-rollout ease-out forwards;
 
 }
 
@@ -458,6 +460,10 @@ footer {
     text-size-adjust: auto;
 }
 
+.mon-flex #mobile-array {
+    display: none;
+}
+
 
 @keyframes rollout {
     from {
@@ -525,12 +531,60 @@ footer {
 }
 
 @media only screen and (max-width: 768px) {
+
+.mon-flex {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 15px 0 30px;
+}
+
+.mon-flex .mon {
+    width: inherit;
+    aspect-ratio: 1/1;
+    display: block;
+    flex: 10;
+    margin-inline: 12px;
+    padding: 0;
+}
+
+.mon-flex #mobile-array {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin-inline: 10px;
+    align-items: center;
+    flex: 4;
+}
+
+.mon-flex #mobile-array button {
+    min-width: unset;
+    width: 100px;
+    height: 10px !important;
+    margin: 10px 0;
+    border-radius: 10px;
+    
+}
+
+
+#desktop-array {
+    display: none;
+}
+
+input {
+    width: 250px;
+
+}
+
     body {
         overflow: hidden;
 
     }
+
+
+
     .text-array {
-       width: 75%;
+       width: 90%;
     }
 
     header h1 {
@@ -557,10 +611,6 @@ footer {
     .form-section label {
         margin-right: 10px;
     }
-
-    .mon {
-        width: 75%;
-    }   
 
 
     #dark-toggle {
