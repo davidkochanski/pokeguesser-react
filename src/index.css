@@ -130,15 +130,18 @@ label {
     width: 100%;
 }   
 
+.mon {
+    padding: 25px;
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+
+
 .mon-flex {
     display: flex;
-    /* width: 100%; */
     margin: 15px 0 30px;
 }
 
-.mon-flex .mon {
-    padding: 25px;
-}
 
 .red {
     color: #DC143C;
@@ -208,7 +211,7 @@ button {
     font-size: 20px;
     border-radius: 10px;
     outline: 2px solid black;
-    transition: all 0.25s;
+    transition: translate 0.25s;
     min-width: 170px;
 }
 
@@ -510,23 +513,23 @@ footer {
 
 @keyframes shake {
     0% {
-        translate: 0px;
+        translate: 0 0;
     }
 
     25% {
-        translate: -10px;
+        translate: -10px 0;
     }
 
     50% {
-        translate: 0px;
+        translate: 0 0;
     }
 
     75% {
-        translate: 10px;
+        translate: 10px 0;
     }
 
     100% {
-        translate: 0px;
+        translate: 0 0;
     }
 }
 
@@ -540,10 +543,11 @@ footer {
 }
 
 .mon-flex .mon {
+    display: block;
     width: inherit;
     aspect-ratio: 1/1;
     display: block;
-    flex: 10;
+    flex: 11;
     margin-inline: 12px;
     padding: 0;
 }
@@ -553,16 +557,17 @@ footer {
     flex-direction: column;
     padding: 0;
     margin-inline: 10px;
-    align-items: center;
+    justify-content: center;
     flex: 4;
 }
 
 .mon-flex #mobile-array button {
-    min-width: unset;
-    width: 100px;
-    height: 10px !important;
+    min-width: 80px;
+    width: 100%;
+    aspect-ratio: 4/3;
     margin: 10px 0;
-    border-radius: 10px;
+    border-radius: 10px; 
+    flex: unset;
     
 }
 
