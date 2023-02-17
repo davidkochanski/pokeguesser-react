@@ -181,6 +181,7 @@ p {
     font-size: 32px;
     padding-bottom: 8px;
     width: 100%;
+    user-select: none;
 }
 
 .button-array {
@@ -256,6 +257,7 @@ button:hover {
     font-size: 27px;
     width: 40px;
     height: 40px;
+    cursor: pointer;
 }
 
 #share-button {
@@ -265,11 +267,8 @@ button:hover {
     width: 40px;
     height: 40px;
     font-size: 25px;
-
-}
-
-i:hover {
     cursor: pointer;
+
 }
 
 .tooltip {
@@ -535,51 +534,51 @@ footer {
 
 @media only screen and (max-width: 768px) {
 
-.mon-flex {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 15px 0 30px;
-}
+    .mon-flex {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 15px 0 30px;
+    }
 
-.mon-flex .mon {
-    display: block;
-    width: inherit;
-    aspect-ratio: 1/1;
-    display: block;
-    flex: 11;
-    margin-inline: 12px;
-    padding: 0;
-}
+    .mon-flex .mon {
+        display: block;
+        width: inherit;
+        aspect-ratio: 1/1;
+        display: block;
+        flex: 11;
+        margin-inline: 12px;
+        padding: 0;
+    }
 
-.mon-flex #mobile-array {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    margin-inline: 10px;
-    justify-content: center;
-    flex: 4;
-}
+    .mon-flex #mobile-array {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        margin-inline: 10px;
+        justify-content: center;
+        flex: 4;
+    }
 
-.mon-flex #mobile-array button {
-    min-width: 80px;
-    width: 100%;
-    aspect-ratio: 4/3;
-    margin: 10px 0;
-    border-radius: 10px; 
-    flex: unset;
-    
-}
+    .mon-flex #mobile-array button {
+        min-width: 80px;
+        width: 100%;
+        aspect-ratio: 4/3;
+        margin: 10px 0;
+        border-radius: 10px; 
+        flex: unset;
+        
+    }
 
 
-#desktop-array {
-    display: none;
-}
+    #desktop-array {
+        display: none;
+    }
 
-input {
-    width: 250px;
+    input {
+        width: 250px;
 
-}
+    }
 
     body {
         overflow: hidden;

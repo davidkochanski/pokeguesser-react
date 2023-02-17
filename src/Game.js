@@ -182,7 +182,7 @@ export default class Game extends React.Component {
 
                     <div className="mon-flex">
                         <Pokemon url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + (this.state.dexNumber) + ".png"}
-                                onClick={() => this.newPokemon(true)}/>
+                        />
 
                         <div id="mobile-array" className="button-array">
                             <button onClick={() => this.newPokemon(true)}>
