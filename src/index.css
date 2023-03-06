@@ -91,24 +91,22 @@ header h1 {
     padding: 0;
 }
 
-.game, .start {
+.game, .start, .leaderboard-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     max-width: 512px;
+    margin: 0 auto;
+
 }
 
 
 .start {
-    margin: 0 auto;
     height: 70vh;
 }
 
-.game {
-    margin: 0 auto;
-}
 
 input {
     font-size: 28px;
@@ -530,6 +528,63 @@ footer {
     100% {
         translate: 0 0;
     }
+}
+
+
+.leaderboard-wrapper {
+    display: flex;
+    flex-direction: column;
+    border: white 1px solid;
+}
+
+.leaderboard-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.leaderboard-row:nth-of-type(2n + 1) {
+    background: rgba(180, 180, 180, 0.2);
+}
+
+.leaderboard-row:first-of-type {
+    border-radius: 16px 16px 0 0;
+}
+
+.leaderboard-row div:first-of-type {
+    flex: 1;
+    font-size: 30px;
+}
+
+.leaderboard-row div:nth-of-type(2) {
+    flex: 2;
+    text-align: left;
+}
+
+.leaderboard-row div:nth-of-type(3) {
+    flex: 1;
+}
+
+.leaderboard-row:first-of-type > div:first-child {
+    color: gold;
+}
+
+.leaderboard-row:nth-of-type(2) > div:first-child {
+    color: silver;
+}
+
+.leaderboard-row:nth-of-type(3) > div:first-child {
+    color: #CD7F32;
+}
+
+.leaderboard-row:last-of-type {
+    justify-content: center;
+    padding: 5px 0;
+    border-bottom: none;
 }
 
 @media only screen and (max-width: 768px) {

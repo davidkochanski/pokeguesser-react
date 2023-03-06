@@ -2,6 +2,7 @@ import React from 'react';
 import Game from "./Game.js";
 import GameOverModal from './GameOverModal.js';
 import Menu from './Menu.js';
+import Leaderboard from './Leaderboard.js';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -10,6 +11,7 @@ export default class App extends React.Component {
         this.handleDifficultyChange = this.handleDifficultyChange.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
         this.handleStartButton = this.handleStartButton.bind(this);
+        this.handleLeaderboardButton = this.handleLeaderboardButton.bind(this);
         this.endZenMode = this.endZenMode.bind(this);
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
@@ -19,6 +21,8 @@ export default class App extends React.Component {
             timeText: "1 min",
             time: 60,
             gameActive: false,
+            leaderboardShown: false,
+            menuShown: true
         }
 
         this.gameState = React.createRef();
@@ -55,6 +59,11 @@ export default class App extends React.Component {
         if(this.state.time === 0) this.setState( {time: 60, timeText: "1 min", difficultyText: "Normal" } )
     }
 
+    handleLeaderboardButton(event) {
+        this.setState( {leaderboardShown: !this.state.leaderboardShown, menuShown: !this.state.menuShown} );
+    }
+
+
     startTimer() {
         if (this.timer === 0 && this.state.time > 0) {
             this.timer = setInterval(this.countDown, 1000);
@@ -77,13 +86,22 @@ export default class App extends React.Component {
     }
 
     renderMenu() {
-        if(!this.state.gameActive) return (
+        if(!this.state.gameActive && this.state.menuShown) return (
             <Menu 
                 timeChange={this.handleTimeChange}
                 timeText={this.state.timeText}
                 difficultyChange={this.handleDifficultyChange} 
                 difficultyText={this.state.difficultyText}
                 startButton={this.handleStartButton}
+                showLeaderboards={this.handleLeaderboardButton}
+            />
+        )
+    }
+
+    renderLeaderboard() {
+        if(this.state.leaderboardShown) return (
+            <Leaderboard
+                returnToMenu={this.handleLeaderboardButton}
             />
         )
     }
@@ -122,6 +140,7 @@ export default class App extends React.Component {
         return (
             <div>
                 {this.renderMenu()}
+                {this.renderLeaderboard()}
                 {this.renderGame()}
                 {this.renderGameOver()}
             </div>

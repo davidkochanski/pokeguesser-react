@@ -33,6 +33,10 @@ export default function Menu(props) {
             <button onClick={(event) => props.startButton(event)}>
                 Start
             </button>
+
+            <button onClick={(event) => props.showLeaderboards(event)}>
+                Leaderboards
+            </button>
         </div>
     )
 }

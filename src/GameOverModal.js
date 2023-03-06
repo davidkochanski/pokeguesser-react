@@ -9,6 +9,15 @@ export default function GameOverModal(props) {
         console.log("Copied!");
     }
 
+    const writeToLocal = () => {
+        window.sessionStorage.setItem("david", {"score": props.gameState.score, "monsSkipped": props.gameState.monsSkipped,
+                                              "hintsTaken": props.gameState.hintsTaken, "maxCombo": props.gameState.maxCombo})
+
+        console.log(window.localStorage);
+    }   
+
+    
+
 
     return (
         <div className="modal">
@@ -68,6 +77,8 @@ export default function GameOverModal(props) {
                         <div className="tooltip-header"><strong>Copied!</strong></div>
                     </span>
                 </i>
+
+                {writeToLocal()}
             </div>
         </div>
     )
