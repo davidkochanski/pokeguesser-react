@@ -30,13 +30,16 @@ export default function Menu(props) {
                 </div>
             </form>
 
-            <button onClick={(event) => props.startButton(event)}>
-                Start
-            </button>
+            <div className="button-array">
+                <button onClick={(event) => props.startButton(event)}>
+                    Start
+                </button>
 
-            <button onClick={(event) => props.showLeaderboards(event)}>
-                Leaderboards
-            </button>
+                <button onClick={(event) => props.showLeaderboards(event)}>
+                    Leaderboards
+                </button>
+            </div>
+            
         </div>
     )
 }
