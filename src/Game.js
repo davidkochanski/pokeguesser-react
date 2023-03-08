@@ -219,9 +219,10 @@ export default class Game extends React.Component {
                 </div>
                 {this.renderZenModeButton()}
 
-
-                <h3>{this.state.hintMessage}</h3>
-                <p className={this.state.combo < 5 ? "combo" : "combo hot-combo"} key={this.state.combo}>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</p>
+                <div className="out">
+                    <h3>{this.state.hintMessage}</h3>
+                    <p className={this.state.combo < 5 ? "combo" : "combo hot-combo"} key={this.state.combo}>{this.state.combo <= 1 ? null : this.state.combo + "x Combo!"}</p>
+                    </div>
                 </div>
 
         );

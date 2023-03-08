@@ -91,7 +91,7 @@ header h1 {
     padding: 0;
 }
 
-.game, .start, .leaderboard-wrapper {
+.game, .start, .leaderboard {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -99,12 +99,23 @@ header h1 {
     text-align: center;
     max-width: 512px;
     margin: 0 auto;
-
+    height: calc(100vh - 200px);
 }
 
 
+.start, .leaderboard-wrapper {
+    opacity: 0;
+    animation: show 0.6s ease-out forwards;
+    width: 100%;
+}
+
 .start {
-    height: 70vh;
+    height: calc(100vh - 200px);
+}
+
+.out {
+    flex: 1;
+    width: 100%;
 }
 
 
@@ -115,7 +126,7 @@ input {
     width: 300px;
     accent-color: #DC143C;
 }
-
+x
 input[type=range] {
     display: block;
     width: 100%;
@@ -136,6 +147,10 @@ label {
     aspect-ratio: 1/1;
     flex: 1;
 }
+
+/* .mon {
+    animation: show 1s ease-out forwards;
+} */
 
 
 .mon-flex {
@@ -347,8 +362,9 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 100px;
     text-align: center;
+    justify-content: center;
+    height: 80px;
 }
 
 .modal {
@@ -534,6 +550,15 @@ footer {
     }
 }
 
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 
 .leaderboard-wrapper {
     display: flex;
@@ -547,7 +572,7 @@ footer {
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 0;
+    padding: 12px 0;
     border-bottom: 1px solid #ccc;
 }
 
@@ -586,9 +611,24 @@ footer {
 }
 
 .leaderboard-row:last-of-type {
-    justify-content: center;
-    padding: 5px 0;
     border-bottom: none;
+}
+
+.leaderboard-bottom {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    gap: 4rem;
+
+    border-top: 1px solid white;
+    margin-top: 20px;
+}
+
+.leaderboard-bottom p {
+    padding: 0;
+    margin-left: 12px;
 }
 
 @media only screen and (max-width: 768px) {
@@ -640,11 +680,8 @@ footer {
     }
 
     body {
-        overflow: hidden;
-
+        overflow-x: hidden;
     }
-
-
 
     .text-array {
        width: 90%;
@@ -695,6 +732,15 @@ footer {
 
     .leaderboard-row:first-of-type {
         border-radius: 4px 4px 0 0;
+    }
+/*     
+    .leaderboard-bottom {
+        flex-direction: column;
+        gap: 0;
+    } */
+
+    .combo {
+        margin-top: 7px;
     }
     
 }

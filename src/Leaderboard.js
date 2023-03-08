@@ -12,25 +12,30 @@ export default function Leaderboard(props) {
     }
 
         return (
-            
-                <div className="leaderboard-wrapper glass">
 
-                    {renderLeaderboardCell(1)}
-                    {renderLeaderboardCell(2)}
-                    {renderLeaderboardCell(3)}
-                    {renderLeaderboardCell(4)}
-                    {renderLeaderboardCell(5)}
-                    {renderLeaderboardCell(6)}
-                    {renderLeaderboardCell(7)}
-                    {renderLeaderboardCell(8)}
-                    {renderLeaderboardCell(9)}
-                    {renderLeaderboardCell(10)}
+                <div className="leaderboard">
+                    <div className="leaderboard-wrapper glass">
 
-                    <div className="leaderboard-row">
+                        {renderLeaderboardCell(1)}
+                        {renderLeaderboardCell(2)}
+                        {renderLeaderboardCell(3)}
+                        {renderLeaderboardCell(4)}
+                        {renderLeaderboardCell(5)}
+                        {renderLeaderboardCell(6)}
+                        {renderLeaderboardCell(7)}
+                        {renderLeaderboardCell(8)}
+                        {renderLeaderboardCell(9)}
+                        {renderLeaderboardCell(10)} 
+                    </div>
+                    
+                    <div className="leaderboard-bottom">
+                        <p>Your best: 904</p>
                         <button onClick={(event) => props.returnToMenu(event)}>
                             Return
                         </button>
                     </div>
+                    
+                    
                 </div>
 
         );
