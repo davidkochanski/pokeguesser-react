@@ -92,7 +92,7 @@ export default class Game extends React.Component {
     }
 
     handleHintClick() {
-        this.setState( {hintMessage: "This Pokemon's from Generation " + (getGeneration(this.state.dexNumber))} );
+        this.setState( {hintMessage: "This Pokémon's from Generation " + (getGeneration(this.state.dexNumber))} );
 
         let mon = POKEMON[this.state.dexNumber]
         let end = mon.length - 1

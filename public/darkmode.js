@@ -1,6 +1,7 @@
 let toggle = document.getElementById("dark-toggle");
 
 toggle.onclick = () => {
+    document.body.classList.add("smooth-bg");
     document.body.classList.toggle("light");
 
     if(toggle.classList.contains("fa-moon")) {

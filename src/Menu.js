@@ -11,13 +11,13 @@ export default function Menu(props) {
                     <i className="fa-solid fa-circle-info">
                         <span className="tooltip glass">
                             <div className="tooltip-header"><strong>Easy Mode</strong></div>
-                            <div className="tooltip-text">Contains only the first 151 Pokemon from Generation 1. Great place to start.</div>
+                            <div className="tooltip-text">Contains only the first 151 Pokémon from Generation 1. Great place to start.</div>
 
                             <div className="tooltip-header"><strong>Normal Mode</strong></div>
-                            <div className="tooltip-text">All 1008 Pokemon are fair game.</div>
+                            <div className="tooltip-text">All 1008 Pokémon are fair game.</div>
 
                             <div className="tooltip-header"><strong>Hard Mode</strong></div>
-                            <div className="tooltip-text">All 1008 Pokemon, AND no letter hints are granted. Only for true Pokemon Masters.</div>
+                            <div className="tooltip-text">All 1008 Pokémon, AND no letter hints are granted. Only for true Pokémon Masters.</div>
                         </span>
                     </i>
                 </div>
@@ -38,8 +38,10 @@ export default function Menu(props) {
                 <button onClick={(event) => props.showLeaderboards(event)}>
                     Leaderboards
                 </button>
+                
             </div>
-            
+            <p className="casual-text">{props.timeText == "100 sec" ? <span>&nbsp;</span> : "CASUAL GAMEMODE: Stats won't be recorded"}</p>
+
         </div>
     )
 }

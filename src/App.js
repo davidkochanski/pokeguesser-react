@@ -18,8 +18,8 @@ export default class App extends React.Component {
 
         this.state = {
             difficultyText: "Normal",
-            timeText: "1 min",
-            time: 60,
+            timeText: "100 sec",
+            time: 100,
             gameActive: false,
             leaderboardShown: false,
             menuShown: true
@@ -41,7 +41,7 @@ export default class App extends React.Component {
 
     timeMap = {
         "25": [30, "30 sec"],
-        "50": [60, "1 min"],
+        "50": [100, "100 sec"],
         "75": [180, "3 min"],
         "100": [300, "5 min"],
         "125": [-1, "Zen Mode"]
@@ -56,11 +56,11 @@ export default class App extends React.Component {
 
     handleStartButton(event) {
         this.setState( {gameActive: !this.state.gameActive} )
-        if(this.state.time === 0) this.setState( {time: 60, timeText: "1 min", difficultyText: "Normal" } )
+        if(this.state.time === 0) this.setState( {time: 100, timeText: "100 sec", difficultyText: "Normal" } )
     }
 
     handleLeaderboardButton(event) {
-        this.setState( {leaderboardShown: !this.state.leaderboardShown, menuShown: !this.state.menuShown} );
+        this.setState( {leaderboardShown: !this.state.leaderboardShown, menuShown: !this.state.menuShown, time: 100, timeText: "100 sec", difficultyText: "Normal"} );
     }
 
 
@@ -98,10 +98,11 @@ export default class App extends React.Component {
         )
     }
 
-    renderLeaderboard() {
+    renderLeaderboard(diff) {
         if(this.state.leaderboardShown) return (
             <Leaderboard
                 returnToMenu={this.handleLeaderboardButton}
+                leaderboardDifficulty={diff}
             />
         )
     }
@@ -140,7 +141,7 @@ export default class App extends React.Component {
         return (
             <div>
                 {this.renderMenu()}
-                {this.renderLeaderboard()}
+                {this.renderLeaderboard("easy")}
                 {this.renderGame()}
                 {this.renderGameOver()}
             </div>
