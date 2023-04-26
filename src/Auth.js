@@ -1,6 +1,7 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef} from 'react';
+import ChangeNameModal from './ChangeName';
 
 const auth = getAuth();
 
@@ -8,6 +9,12 @@ const provider = new GoogleAuthProvider();
 
 export default function SignInButton() {
     const [user, setUser] = useState(null);
+    const [showNameChange, setShowNameChange] = useState(false);
+
+
+    const handleClose = () => {
+        setShowNameChange(false);
+    }
   
     useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -16,7 +23,7 @@ export default function SignInButton() {
   
       return () => unsubscribe();
     }, []);
-  
+
     const handleSignIn = async () => {
       try {
         const result = await signInWithPopup(auth, provider);
@@ -34,13 +41,23 @@ export default function SignInButton() {
         console.error(error);
       }
     };
-  
+
+
+
     if (user) {
       return (
         <div className="signed-in">
-          {/* <button className="signed-out" onClick={handleSignOut}>Sign Out</button> */}
-          <img className="signed-in-avatar" onClick={handleSignOut} src={user.photoURL} alt={user.displayName} />
+          
+          <img className="signed-in-avatar" src={user.photoURL} alt={user.displayName} />
+          <div className="dropdown glass">
+            <p>Signed in as</p>
+            <p><a onClick={() => {setShowNameChange(true)}}>{user.displayName} <i className="fas fa-pencil"></i></a></p>
+            <button className="signed-out" onClick={handleSignOut}>Sign Out</button>
+          </div>
+            {showNameChange ? <ChangeNameModal onClose={handleClose}/> : ""}
+
         </div>
+
       );
     } else {
       return <button className="signed-out" onClick={handleSignIn}>Sign In</button>;

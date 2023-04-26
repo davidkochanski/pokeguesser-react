@@ -40,7 +40,7 @@ export default function Menu(props) {
                 </button>
                 
             </div>
-            <p className="casual-text">{props.timeText == "100 sec" ? <span>&nbsp;</span> : "CASUAL GAMEMODE: Stats won't be recorded"}</p>
+            <p className="casual-text">{props.timeText === "100 sec" ? <span>&nbsp;</span> : "CASUAL GAMEMODE: Stats won't be recorded"}</p>
 
         </div>
     )

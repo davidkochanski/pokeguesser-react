@@ -1,4 +1,6 @@
 import React from 'react';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useState } from 'react';
 
 
 export default function GameOverModal(props) {
@@ -16,7 +18,16 @@ export default function GameOverModal(props) {
         console.log(window.localStorage);
     }   
 
-    
+    const [user, setUser] = useState(null);
+
+    const auth = getAuth();
+    onAuthStateChanged(auth, (u) => {
+      if (u) {
+        setUser(u);
+      } else {
+        setUser(null);
+      }
+    });
 
 
     return (
@@ -69,6 +80,10 @@ export default function GameOverModal(props) {
                     </div>
                 </div>
 
+
+                <div>
+                    {user ? `Score saved! ${user.id}` : "You are not signed in..."}
+                </div>
 
                 <button onClick={(event) => props.handleStartButton(event)}>Play Again?</button>
 
