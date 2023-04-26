@@ -93,16 +93,15 @@ const readScore = async (month, difficulty) => {
     return (
         <div className="leaderboard">
             <div className="leaderboard-buttons">
-                <button onClick={() => { setDiff("easy") }}>Easy</button>
-                <button onClick={() => { setDiff("normal") }}>Normal</button>
-                <button onClick={() => { setDiff("hard") }}>Hard</button>
+                <button className={diff === "easy" ? "tabbed" : ""} onClick={() => { setDiff("easy") }}>Easy</button>
+                <button className={diff === "normal" ? "tabbed" : ""} onClick={() => { setDiff("normal") }}>Normal</button>
+                <button className={diff === "hard" ? "tabbed" : ""} onClick={() => { setDiff("hard") }}>Hard</button>
             </div>
             <div className="leaderboard-wrapper glass">
                 {leaderboardCells}
             </div>
             <div className="leaderboard-bottom">
-            <p>Your best: ???</p>
-            <button onClick={(event) => props.returnToMenu(event)}>Return</button>
+                <button onClick={(event) => props.returnToMenu(event)}>Return</button>
             </div>
         </div>
     );
