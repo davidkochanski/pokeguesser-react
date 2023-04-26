@@ -46,11 +46,13 @@ export default function SignInButton() {
 
     if (user) {
       return (
-        <div className="signed-in">
+        <div className="signed-in" id="signed-in">
           
-          <img className="signed-in-avatar" src={user.photoURL} alt={user.displayName} />
+          
+          <img className="signed-in-avatar" src={auth.currentUser.photoURL} alt={user.displayName} />
+          <input type="checkbox" id="dropdown-toggle"/>
           <div className="dropdown glass">
-            <p>Signed in as</p>
+            <p>Signed in with Google as</p>
             <p><a onClick={() => {setShowNameChange(true)}}>{user.displayName} <i className="fas fa-pencil"></i></a></p>
             <button className="signed-out" onClick={handleSignOut}>Sign Out</button>
           </div>

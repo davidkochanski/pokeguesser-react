@@ -1,23 +1,30 @@
 import React from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, get, set, ref, child } from "firebase/database";
 import { useState } from 'react';
+import dotenv from "dotenv";
+import { initializeApp } from "firebase/app";
+
+dotenv.config();
+
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
 
 
 export default function GameOverModal(props) {
-    const handleShare = (score) => {
-        navigator.clipboard.writeText(
-            `I got a score of ${score} mons guessed in ${props.timeText} on ${props.difficultyText.toLocaleLowerCase()} mode! https://www.pokeguesser.io/`
-        )
-        console.log("Copied!");
-    }
-
-    const writeToLocal = () => {
-        window.sessionStorage.setItem("david", {"score": props.gameState.score, "monsSkipped": props.gameState.monsSkipped,
-                                              "hintsTaken": props.gameState.hintsTaken, "maxCombo": props.gameState.maxCombo})
-
-        console.log(window.localStorage);
-    }   
-
     const [user, setUser] = useState(null);
 
     const auth = getAuth();
@@ -29,6 +36,48 @@ export default function GameOverModal(props) {
       }
     });
 
+    const flavourText = () => {
+        if(!user) {
+            return "You are not signed in!";
+        } else if (props.timeText !== "100 sec") {
+            return "";
+        } else {
+            return "Score recorded!";
+        }
+    }
+
+
+    const handleShare = (score) => {
+        navigator.clipboard.writeText(
+            `I got a score of ${score} mons guessed in ${props.timeText} on ${props.difficultyText.toLocaleLowerCase()} mode! https://davidkochanski.dev/pokeguesser/`
+        )
+        console.log("Copied!");
+    }
+
+    const writeScore = (month, difficulty, userName, score) => {
+        if(!user || props.timeText !== "100 sec") {
+            return;
+        }
+        
+        const dbRef = ref(getDatabase());
+        let curr = {};
+        get(child(dbRef, `scores/${month}/${difficulty}`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              curr = snapshot.val();
+
+              let nextIndex = curr.length;
+
+              let updated = Object.assign({}, curr, {[nextIndex]: {name: userName, score: score, time: new Date().getTime()}});
+    
+              set(ref(database, `scores/${month}/${difficulty}`), updated)
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            return;
+          });
+        }
 
     return (
         <div className="modal">
@@ -82,7 +131,7 @@ export default function GameOverModal(props) {
 
 
                 <div>
-                    {user ? `Score saved! ${user.id}` : "You are not signed in..."}
+                    {flavourText()}
                 </div>
 
                 <button onClick={(event) => props.handleStartButton(event)}>Play Again?</button>
@@ -93,7 +142,7 @@ export default function GameOverModal(props) {
                     </span>
                 </i>
 
-                {writeToLocal()}
+                {user ? writeScore(1, props.difficultyText.toLowerCase(), user.displayName, props.gameState.state.score) : ""}
             </div>
         </div>
     )

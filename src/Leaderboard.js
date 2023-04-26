@@ -22,11 +22,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-
-const writeScore = (month, difficulty, user, score) => {
-    set(ref(database, `scores/${month}/${difficulty}`), {})
-}
 
 const readScore = async (month, difficulty) => {
     const dbRef = ref(getDatabase());
@@ -69,7 +64,6 @@ const readScore = async (month, difficulty) => {
         
         dataArray.sort((a, b) => {return b[1] - a[1]})
 
-        console.log(dataArray);
 
         while(dataArray.length < 10) {
             dataArray.push(["-", 0]);
